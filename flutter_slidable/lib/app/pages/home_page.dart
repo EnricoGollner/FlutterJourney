@@ -30,9 +30,6 @@ class _HomePageState extends State<HomePage> {
               key: Key(user.name),
               startActionPane: ActionPane(
                 motion: const StretchMotion(),
-                dismissible: DismissiblePane(
-                  onDismissed: () => _onDismissed(index, Actions.archive),
-                ),
                 children: [
                   SlidableAction(
                     backgroundColor: Colors.blue,
@@ -72,19 +69,36 @@ class _HomePageState extends State<HomePage> {
 
   void _onDismissed(int index, Actions action) {
     final user = users[index];
-    setState(() => users.removeAt(index));
 
     switch (action) {
       case Actions.delete:
         _showSnackBar(context, '${user.name} is deleted', Colors.red);
+        setState(() => users.removeAt(index));
         break;
       case Actions.share:
         _showSnackBar(context, '${user.name} is shared', Colors.green);
+        _showModalBottomSheet();
         break;
       case Actions.archive:
         _showSnackBar(context, '${user.name} is archived', Colors.blue);
+        _showModalBottomSheet();
         break;
     }
+  }
+
+  void _showModalBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Center(
+        child: ElevatedButton(
+          child: const Text('Close'),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+    );
   }
 
   void _showSnackBar(BuildContext context, String msg, Color color) {
@@ -103,13 +117,16 @@ class _HomePageState extends State<HomePage> {
           backgroundImage: NetworkImage(user.image),
         ),
         onTap: () {
-          final slidable = Slidable.of(context)!;
-          final isClosed = slidable.actionPaneType.value == ActionPaneType.none;
+          if (Slidable.of(context) != null) {
+            final slidable = Slidable.of(context)!;
+            final isClosed =
+                slidable.actionPaneType.value == ActionPaneType.none;
 
-          if (isClosed) {
-            slidable.openStartActionPane();
-          } else {
-            slidable.close();
+            if (isClosed) {
+              slidable.openStartActionPane();
+            } else {
+              slidable.close();
+            }
           }
         },
       );
