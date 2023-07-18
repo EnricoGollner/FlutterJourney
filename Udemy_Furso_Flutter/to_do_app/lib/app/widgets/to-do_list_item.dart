@@ -11,41 +11,43 @@ class ToDoListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-        startActionPane: ActionPane(
-          motion: StretchMotion(),
+      endActionPane: ActionPane(
+        motion: const StretchMotion(),
+        children: [
+          SlidableAction(
+            backgroundColor: Colors.red,
+            icon: Icons.delete,
+            label: 'Delete',
+            onPressed: (context) => print(taskItem),
+          ),
+        ],
+      ),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey[200],
+        ),
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SlidableAction(
-              backgroundColor: Colors.red,
-              icon: Icons.delete,
-              label: 'Delete',
-              onPressed: (context) => print(taskItem),
+            Text(
+              DateFormat('dd/MM/yyyy - HH:mm').format(taskItem.dateAdded),
+              style: const TextStyle(
+                fontSize: 12,
+              ),
+            ),
+            Text(
+              taskItem.taskName,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey[200],
-          ),
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                DateFormat('dd/MM/yyyy - HH:mm').format(taskItem.dateAdded),
-                style: const TextStyle(
-                  fontSize: 12,
-                ),
-              ),
-              Text(
-                taskItem.taskName,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
