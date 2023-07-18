@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_app/app/widgets/to-do_list.dart';
+import 'package:to_do_app/app/widgets/to_do_list.dart';
 
 import '../models/task_model.dart';
 
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     final newTask =
         TaskModel(taskName: _toDoController.text, dateAdded: dateAdded);
     setState(() {
-      tasks.add(newTask);
+      tasks.insert(0, newTask);
     });
   }
 
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 _addTaskRow(),
                 const SizedBox(height: 10),
-                ToDoList(tasks: tasks),
+                ToDoList(tasks: tasks, onDelete: onDelete),
                 const SizedBox(height: 10),
                 Row(
                   children: [
@@ -66,30 +66,36 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void onDelete(TaskModel task) {
+    setState(() => tasks.remove(task));
+  }
+
   Row _addTaskRow() {
-    return Row(children: [
-      Expanded(
-        child: TextField(
-          controller: _toDoController,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Adicione uma Tarefa',
-            hintText: 'Ex: Estudar Flutter',
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: _toDoController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Adicione uma Tarefa',
+              hintText: 'Ex: Estudar Flutter',
+            ),
           ),
         ),
-      ),
-      const SizedBox(width: 8),
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.teal,
-          padding: const EdgeInsets.all(14),
-        ),
-        onPressed: addTask,
-        child: const Icon(
-          Icons.add,
-          size: 30,
-        ),
-      )
-    ]);
+        const SizedBox(width: 8),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.teal,
+            padding: const EdgeInsets.all(14),
+          ),
+          onPressed: addTask,
+          child: const Icon(
+            Icons.add,
+            size: 30,
+          ),
+        )
+      ],
+    );
   }
 }
