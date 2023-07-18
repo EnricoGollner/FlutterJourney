@@ -81,7 +81,6 @@ class _HomePageState extends State<HomePage> {
         break;
       case Actions.archive:
         _showSnackBar(context, '${user.name} is archived', Colors.blue);
-        _showModalBottomSheet();
         break;
     }
   }

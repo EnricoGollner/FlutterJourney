@@ -14,6 +14,8 @@ class _HomePageState extends State<HomePage> {
   final _toDoController = TextEditingController();
 
   List<TaskModel> tasks = [];
+  TaskModel? deletedTask;
+  int? deletedTaskIndex;
 
   void addTask() {
     DateTime dateAdded = DateTime.now();
@@ -49,11 +51,7 @@ class _HomePageState extends State<HomePage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.teal,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          tasks.clear();
-                        });
-                      },
+                      onPressed: showDeleteTasksConfirmationDialog,
                       child: const Text('Limpar tudo'),
                     )
                   ],
@@ -66,8 +64,29 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onDelete(TaskModel task) {
-    setState(() => tasks.remove(task));
+  void onDelete(TaskModel taskItem) {
+    deletedTask = taskItem;
+    deletedTaskIndex = tasks.indexOf(taskItem);
+
+    setState(() => tasks.remove(taskItem));
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Task ${taskItem.taskName} removed!"),
+        duration: const Duration(seconds: 4),
+        backgroundColor: Colors.black87,
+        action: SnackBarAction(
+          label: "Undo",
+          textColor: const Color(0xff00d7f3),
+          onPressed: () {
+            setState(() {
+              tasks.insert(deletedTaskIndex!, deletedTask!);
+            });
+          },
+        ),
+      ),
+    );
   }
 
   Row _addTaskRow() {
@@ -97,5 +116,40 @@ class _HomePageState extends State<HomePage> {
         )
       ],
     );
+  }
+
+  void showDeleteTasksConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Limpar Tudo?"),
+        content: const Text("Tem certeza que deseja apagar TODAS as tarefas?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: const Color(0xff00d7f3),
+            ),
+            child: const Text("Cancelar"),
+          ),
+          TextButton(
+            onPressed: () {
+              deleteAllTasks();
+              Navigator.pop(context);
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text("Limpar Tudo"),
+          )
+        ],
+      ),
+    );
+  }
+
+  void deleteAllTasks() {
+    setState(() {
+      tasks.clear();
+    });
   }
 }
