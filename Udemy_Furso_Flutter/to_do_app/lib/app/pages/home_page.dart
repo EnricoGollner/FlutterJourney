@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _toDoController = TextEditingController();
-  final taskRepository = TaskRepository();
+  final _taskRepository = TaskRepository();
 
   List<TaskModel> tasks = [];
   TaskModel? deletedTask;
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     // Lifecycle
     super.initState();
 
-    taskRepository.getTasksList().then((listTasks) {
+    _taskRepository.getTasksList().then((listTasks) {
       setState(() {
         tasks = listTasks;
       });
@@ -50,15 +50,15 @@ class _HomePageState extends State<HomePage> {
     });
     errorText = null;
     _toDoController.clear();
-    taskRepository.saveTasks(
+    _taskRepository.saveTasks(
         tasks); // Com o repository salvamos localmente com o packager shared_preferrences
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
           child: Padding(
             padding: const EdgeInsets.all(17),
             child: Column(
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
     deletedTaskIndex = tasks.indexOf(taskItem);
 
     setState(() => tasks.remove(taskItem));
-    taskRepository.saveTasks(tasks);
+    _taskRepository.saveTasks(tasks);
 
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
             setState(() {
               tasks.insert(deletedTaskIndex!, deletedTask!);
             });
-            taskRepository.saveTasks(tasks);
+            _taskRepository.saveTasks(tasks);
           },
         ),
       ),
@@ -191,6 +191,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       tasks.clear();
     });
-    taskRepository.saveTasks(tasks);
+    _taskRepository.saveTasks(tasks);
   }
 }

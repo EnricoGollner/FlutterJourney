@@ -5,8 +5,8 @@ class TaskModel {
   TaskModel({required this.taskName, required this.dateAdded});
 
   TaskModel.fromJson(Map<String, dynamic> json)
-      : taskName = json['taskName'],
-        dateAdded = DateTime.parse(json['dateAdded']);
+      : taskName = json["taskName"],
+        dateAdded = json["dateAdded"];
 
   Map<String, dynamic> toJson() {
     return {
