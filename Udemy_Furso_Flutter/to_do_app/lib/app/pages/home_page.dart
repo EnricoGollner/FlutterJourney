@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_app/app/repositories/tasks_repository.dart';
 import 'package:to_do_app/app/widgets/to_do_list.dart';
 
 import '../models/task_model.dart';
@@ -12,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _toDoController = TextEditingController();
+  final taskRepository = TaskRepository();
 
   List<TaskModel> tasks = [];
   TaskModel? deletedTask;
@@ -24,6 +26,9 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       tasks.insert(0, newTask);
     });
+    _toDoController.clear();
+    taskRepository.saveTasks(
+        tasks); // Com o repository salvamos localmente com o packager shared_preferrences
   }
 
   @override
