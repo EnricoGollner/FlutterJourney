@@ -19,13 +19,36 @@ class _HomePageState extends State<HomePage> {
   TaskModel? deletedTask;
   int? deletedTaskIndex;
 
+  String? errorText;
+
+  @override
+  void initState() {
+    // Lifecycle
+    super.initState();
+
+    taskRepository.getTasksList().then((listTasks) {
+      setState(() {
+        tasks = listTasks;
+      });
+    });
+  }
+
   void addTask() {
+    String taskText = _toDoController.text;
+    if (taskText.isEmpty) {
+      setState(() {
+        errorText = "O título não pode ser vazio!";
+      });
+      return;
+    }
+
     DateTime dateAdded = DateTime.now();
     final newTask =
         TaskModel(taskName: _toDoController.text, dateAdded: dateAdded);
     setState(() {
       tasks.insert(0, newTask);
     });
+    errorText = null;
     _toDoController.clear();
     taskRepository.saveTasks(
         tasks); // Com o repository salvamos localmente com o packager shared_preferrences
@@ -74,6 +97,7 @@ class _HomePageState extends State<HomePage> {
     deletedTaskIndex = tasks.indexOf(taskItem);
 
     setState(() => tasks.remove(taskItem));
+    taskRepository.saveTasks(tasks);
 
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -88,6 +112,7 @@ class _HomePageState extends State<HomePage> {
             setState(() {
               tasks.insert(deletedTaskIndex!, deletedTask!);
             });
+            taskRepository.saveTasks(tasks);
           },
         ),
       ),
@@ -100,10 +125,20 @@ class _HomePageState extends State<HomePage> {
         Expanded(
           child: TextField(
             controller: _toDoController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
               labelText: 'Adicione uma Tarefa',
               hintText: 'Ex: Estudar Flutter',
+              errorText: errorText,
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xff00D7F3),
+                  width: 2,
+                ),
+              ),
+              labelStyle: const TextStyle(
+                color: Color(0xff00d7f3),
+              ),
             ),
           ),
         ),
@@ -156,5 +191,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       tasks.clear();
     });
+    taskRepository.saveTasks(tasks);
   }
 }
