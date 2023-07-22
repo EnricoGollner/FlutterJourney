@@ -11,9 +11,9 @@ class TaskRepository {
 
   Future<List<TaskModel>> getTasksList() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    final String jsonString = sharedPreferences.getString(key) ?? '[]';
-    final List jsonDecoded = json.decode(jsonString) as List;
-    // precisamos dizer para qual tipo de lista queremos converter:
+    final String jsonString = sharedPreferences.getString(key) ?? "[]";
+    final List<dynamic> jsonDecoded = jsonDecode(jsonString);
+    // Tipagem cada objeto, transformando novamente em List ao final.
     return jsonDecoded.map((e) => TaskModel.fromJson(e)).toList();
   }
 
