@@ -17,19 +17,47 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _dolarController = TextEditingController();
   final TextEditingController _euroController = TextEditingController();
 
-  double dolar = 0.0;
-  double euro = 0.0;
+// Preenchidos quando os dados forem carregados no FutureBuilder:
+  late double dolar;
+  late double euro;
 
   void _realChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _refreshTextFields();
+      return;
+    }
+
+    double real = double.parse(text);
+    _dolarController.text = (real / dolar).toStringAsFixed(2);
+    _euroController.text = (real / euro).toStringAsFixed(2);
   }
 
   void _dolarChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _refreshTextFields();
+      return;
+    }
+
+    double dolar = double.parse(text);
+    _realController.text = (dolar * this.dolar).toStringAsFixed(2);
+    _euroController.text = (dolar * this.dolar / euro).toStringAsFixed(2);
   }
 
   void _euroChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _refreshTextFields();
+      return;
+    }
+
+    double euro = double.parse(text);
+    _realController.text = (euro * this.euro).toStringAsFixed(2);
+    _dolarController.text = (euro * this.euro / dolar).toStringAsFixed(2);
+  }
+
+  void _refreshTextFields() {
+    _realController.clear();
+    _dolarController.clear();
+    _euroController.clear();
   }
 
   @override
@@ -39,6 +67,10 @@ class _HomePageState extends State<HomePage> {
         title: const Text("\$ Conversor \$"),
         centerTitle: true,
         backgroundColor: Colors.amber,
+        actions: [
+          IconButton(
+              onPressed: _refreshTextFields, icon: const Icon(Icons.refresh))
+        ],
       ),
       body: FutureBuilder<Map>(
         future: priceRepository.getPrices(),
