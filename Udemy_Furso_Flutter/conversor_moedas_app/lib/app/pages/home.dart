@@ -9,6 +9,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +42,6 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.yellow,
                         ),
                       ),
-                      border: OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           width: 2,
@@ -62,7 +66,6 @@ class _HomePageState extends State<HomePage> {
                         "Dólares",
                         style: TextStyle(color: Colors.yellow),
                       ),
-                      border: OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           width: 2,
@@ -87,19 +90,19 @@ class _HomePageState extends State<HomePage> {
                     decoration: const InputDecoration(
                       label: Text(
                         "Euro",
-                        style: TextStyle(color: Colors.yellow),
-                      ),
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 2,
+                        style: TextStyle(
                           color: Colors.yellow,
                         ),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        width: 2,
+                        color: Colors.yellow,
+                      )),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           width: 2,
-                          color: Colors.yellow,
+                          color: Colors.white,
                         ),
                       ),
                     ),
