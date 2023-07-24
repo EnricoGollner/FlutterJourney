@@ -27,7 +27,9 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    double real = double.parse(text);
+    String treatedText = text.replaceFirst(RegExp(r','), '.');
+
+    double real = double.parse(treatedText);
     _dolarController.text = (real / dolar).toStringAsFixed(2);
     _euroController.text = (real / euro).toStringAsFixed(2);
   }
@@ -38,7 +40,9 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    double dolar = double.parse(text);
+    String treatedText = text.replaceFirst(RegExp(r','), '.');
+
+    double dolar = double.parse(treatedText);
     _realController.text = (dolar * this.dolar).toStringAsFixed(2);
     _euroController.text = (dolar * this.dolar / euro).toStringAsFixed(2);
   }
@@ -49,7 +53,9 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    double euro = double.parse(text);
+    String treatedText = text.replaceFirst(RegExp(r','), '.');
+
+    double euro = double.parse(treatedText);
     _realController.text = (euro * this.euro).toStringAsFixed(2);
     _dolarController.text = (euro * this.euro / dolar).toStringAsFixed(2);
   }
