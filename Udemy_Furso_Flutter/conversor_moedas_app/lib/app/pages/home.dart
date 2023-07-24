@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                 );
               } else {
                 dolar = snapshot.data?["results"]["currencies"]["USD"]["buy"];
-                euro = snapshot.data?["results"]["currencies"]["USD"]["buy"];
+                euro = snapshot.data?["results"]["currencies"]["EUR"]["buy"];
                 return SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
