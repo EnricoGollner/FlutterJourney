@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:new_to_do_app/app/data/models/task_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,28 +17,7 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _taskTextEditingController =
       TextEditingController();
 
-  final _tasksList = [];
-
-  Future<File> _getFile() async {
-    final path = await getApplicationDocumentsDirectory();
-    return File("${path}/data.json");
-  }
-
-  Future<File> _saveFile() async {
-    final String listJson = jsonEncode(_tasksList);
-    final file = await _getFile();
-
-    return file.writeAsString(listJson);
-  }
-
-  Future<String?> _readFile() async {
-    try {
-      final file = await _getFile();
-      return file.readAsString();
-    } catch (e) {
-      return null;
-    }
-  }
+  final List<TaskModel> _tasksList = [];
 
   @override
   Widget build(BuildContext context) {
