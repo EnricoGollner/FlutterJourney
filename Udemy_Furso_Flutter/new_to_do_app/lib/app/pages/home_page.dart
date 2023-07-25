@@ -32,7 +32,9 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     tasksRepository.readData().then((listOfTasks) {
-      tasksList = listOfTasks ?? [];
+      setState(() {
+        tasksList = listOfTasks ?? [];
+      });
     });
   }
 

@@ -10,9 +10,7 @@ class TaskModel {
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
       name: json["name"],
-      isDone: bool.parse(
-        json["isDone"],
-      ),
+      isDone: json["isDone"],
     );
   }
 
