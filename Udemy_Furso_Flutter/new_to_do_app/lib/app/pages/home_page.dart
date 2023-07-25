@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:new_to_do_app/app/data/models/task_model.dart';
 import 'package:new_to_do_app/app/data/repositories/tasks_repository.dart';
 
@@ -24,6 +25,13 @@ class _HomePageState extends State<HomePage> {
       tasksList.insert(0, newTask);
     });
 
+    tasksRepository.saveData(tasksList);
+  }
+
+  void _deleteTask(int index) {
+    setState(() {
+      tasksList.removeAt(index);
+    });
     tasksRepository.saveData(tasksList);
   }
 
@@ -84,8 +92,24 @@ class _HomePageState extends State<HomePage> {
                   },
                   itemBuilder: (context, index) {
                     TaskModel currentTask = tasksList[index];
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width,
+                    return Slidable(
+                      key: const ValueKey(0),
+                      startActionPane: ActionPane(
+                        dismissible: DismissiblePane(onDismissed: () {
+                          setState(() {
+                            _deleteTask(index);
+                          });
+                        }),
+                        motion: const ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (_) => _deleteTask(index),
+                            icon: Icons.delete,
+                            label: "Deletar",
+                            backgroundColor: Colors.red,
+                          )
+                        ],
+                      ),
                       child: CheckboxListTile(
                         secondary: CircleAvatar(
                           child: Icon(
