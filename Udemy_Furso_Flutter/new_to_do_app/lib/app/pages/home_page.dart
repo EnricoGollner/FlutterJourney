@@ -29,10 +29,49 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _deleteTask(int index) {
+    TaskModel taskToDelete = tasksList[index];
+
+    _showSnackBarToUndo(
+      context: context,
+      msg: "Deseja mesmo deletar essa task?",
+      index: index,
+      task: taskToDelete,
+    );
+
     setState(() {
       tasksList.removeAt(index);
     });
+
     tasksRepository.saveData(tasksList);
+  }
+
+  void _showSnackBarToUndo({
+    required BuildContext context,
+    required String msg,
+    required int index,
+    required TaskModel task,
+  }) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.red,
+      duration: const Duration(seconds: 3),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(msg),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                tasksList.insert(index, task);
+              });
+              tasksRepository.saveData(tasksList);
+            },
+            child: const Text("Desfazer"),
+          )
+        ],
+      ),
+    );
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
