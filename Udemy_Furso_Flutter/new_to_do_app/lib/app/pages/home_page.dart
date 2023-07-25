@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:new_to_do_app/app/data/models/task_model.dart';
 import 'package:new_to_do_app/app/data/repositories/tasks_repository.dart';
 
@@ -33,7 +32,7 @@ class _HomePageState extends State<HomePage> {
 
     _showSnackBarToUndo(
       context: context,
-      msg: "Deseja mesmo deletar essa task?",
+      msg: "Task deletada. Deseja desfazer?",
       index: index,
       task: taskToDelete,
     );
@@ -131,40 +130,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   itemBuilder: (context, index) {
                     TaskModel currentTask = tasksList[index];
-                    return Slidable(
-                      key: const ValueKey(0),
-                      startActionPane: ActionPane(
-                        dismissible: DismissiblePane(onDismissed: () {
-                          setState(() {
-                            _deleteTask(index);
-                          });
-                        }),
-                        motion: const ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            onPressed: (_) => _deleteTask(index),
-                            icon: Icons.delete,
-                            label: "Deletar",
-                            backgroundColor: Colors.red,
-                          )
-                        ],
-                      ),
-                      child: CheckboxListTile(
-                        secondary: CircleAvatar(
-                          child: Icon(
-                            currentTask.isDone ? Icons.done : Icons.error,
-                          ),
-                        ),
-                        title: Text(currentTask.name),
-                        value: currentTask.isDone,
-                        onChanged: (value) {
-                          setState(() {
-                            currentTask.isDone = value!;
-                          });
-                          tasksRepository.saveData(tasksList);
-                        },
-                      ),
-                    );
+                    return taskItemWidget(index, currentTask);
                   },
                 ),
               ),
@@ -215,6 +181,39 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget taskItemWidget(int index, TaskModel taskItem) {
+    return Dismissible(
+      key: const ValueKey(0),
+      direction: DismissDirection.startToEnd,
+      background: Container(
+        color: Colors.red,
+        child: const Align(
+          alignment: Alignment(-0.9, 0.0),
+          child: Icon(Icons.delete, color: Colors.white),
+        ),
+      ),
+      onDismissed: (_) {
+        _deleteTask(index);
+      },
+      child: CheckboxListTile(
+        secondary: CircleAvatar(
+          backgroundColor: taskItem.isDone ? Colors.blue : Colors.red,
+          child: Icon(
+            taskItem.isDone ? Icons.done : Icons.error_outline,
+            color: Colors.white,
+          ),
+        ),
+        title: Text(taskItem.name),
+        value: taskItem.isDone,
+        onChanged: (value) {
+          setState(() {
+            taskItem.isDone = value!;
+          });
+        },
       ),
     );
   }
