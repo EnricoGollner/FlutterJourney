@@ -1,5 +1,6 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:new_to_do_app/app/data/models/task_model.dart';
 import 'package:new_to_do_app/app/data/repositories/tasks_repository.dart';
 
@@ -19,13 +20,16 @@ class _HomePageState extends State<HomePage> {
   final tasksRepository = TasksRepository();
 
   void _addTask() {
-    final taskName = _taskTextEditingController.text;
-    final TaskModel newTask = TaskModel(name: taskName, isDone: false);
-    setState(() {
-      tasksList.insert(0, newTask);
-    });
+    if (_formKey.currentState!.validate()) {
+      final taskName = _taskTextEditingController.text;
+      final TaskModel newTask = TaskModel(name: taskName, isDone: false);
+      setState(() {
+        // tasksList.insert(0, newTask);
+        tasksList.add(newTask);
+      });
 
-    tasksRepository.saveData(tasksList);
+      tasksRepository.saveData(tasksList);
+    }
   }
 
   void _deleteTask(int index) {
@@ -33,7 +37,7 @@ class _HomePageState extends State<HomePage> {
 
     _showSnackBarToUndo(
       context: context,
-      msg: "Deseja mesmo deletar essa task?",
+      msg: "Task deletada. Deseja desfazer?",
       index: index,
       task: taskToDelete,
     );
@@ -53,7 +57,7 @@ class _HomePageState extends State<HomePage> {
   }) {
     final snackBar = SnackBar(
       backgroundColor: Colors.red,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -71,7 +75,26 @@ class _HomePageState extends State<HomePage> {
       ),
     );
     ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    setState(() {
+      tasksList.sort((taskA, taskB) {
+        if (taskA.isDone && !taskB.isDone) {
+          return 1; // A vem depois se B for false.
+        } else if (!taskA.isDone && taskB.isDone) {
+          return -1; // A vem antes se B for true.
+        } else {
+          return 0;
+        }
+      });
+    });
+
+    tasksRepository.saveData(tasksList);
   }
 
   @override
@@ -110,6 +133,12 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.blueAccent,
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Dê um nome à tarefa antes de adicioná-la.";
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
@@ -123,49 +152,19 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.only(top: 10),
-                  itemCount: tasksList.length,
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(height: 5);
-                  },
-                  itemBuilder: (context, index) {
-                    TaskModel currentTask = tasksList[index];
-                    return Slidable(
-                      key: const ValueKey(0),
-                      startActionPane: ActionPane(
-                        dismissible: DismissiblePane(onDismissed: () {
-                          setState(() {
-                            _deleteTask(index);
-                          });
-                        }),
-                        motion: const ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            onPressed: (_) => _deleteTask(index),
-                            icon: Icons.delete,
-                            label: "Deletar",
-                            backgroundColor: Colors.red,
-                          )
-                        ],
-                      ),
-                      child: CheckboxListTile(
-                        secondary: CircleAvatar(
-                          child: Icon(
-                            currentTask.isDone ? Icons.done : Icons.error,
-                          ),
-                        ),
-                        title: Text(currentTask.name),
-                        value: currentTask.isDone,
-                        onChanged: (value) {
-                          setState(() {
-                            currentTask.isDone = value!;
-                          });
-                          tasksRepository.saveData(tasksList);
-                        },
-                      ),
-                    );
-                  },
+                child: RefreshIndicator(
+                  onRefresh: _refresh,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.only(top: 10),
+                    itemCount: tasksList.length,
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 5);
+                    },
+                    itemBuilder: (context, index) {
+                      TaskModel currentTask = tasksList[index];
+                      return taskItemWidget(index, currentTask);
+                    },
+                  ),
                 ),
               ),
               Row(
@@ -215,6 +214,41 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget taskItemWidget(int index, TaskModel taskItem) {
+    return Dismissible(
+      key: UniqueKey(),
+      direction: DismissDirection.startToEnd,
+      background: Container(
+        color: Colors.red,
+        child: const Align(
+          alignment: Alignment(-0.9, 0.0),
+          child: Icon(Icons.delete, color: Colors.white),
+        ),
+      ),
+      onDismissed: (_) {
+        setState(() {
+          _deleteTask(index);
+        });
+      },
+      child: CheckboxListTile(
+        secondary: CircleAvatar(
+          backgroundColor: taskItem.isDone ? Colors.blue : Colors.red,
+          child: Icon(
+            taskItem.isDone ? Icons.done : Icons.error_outline,
+            color: Colors.white,
+          ),
+        ),
+        title: Text(taskItem.name),
+        value: taskItem.isDone,
+        onChanged: (value) {
+          setState(() {
+            taskItem.isDone = value!;
+          });
+        },
       ),
     );
   }
