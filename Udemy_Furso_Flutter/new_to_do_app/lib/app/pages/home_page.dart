@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   void _addTask() {
     if (_formKey.currentState!.validate()) {
       final taskName = _taskTextEditingController.text;
+      _taskTextEditingController.clear();
       final TaskModel newTask = TaskModel(name: taskName, isDone: false);
       setState(() {
         // tasksList.insert(0, newTask);
@@ -80,14 +81,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _refresh() async {
-    await Future.delayed(const Duration(seconds: 1));
+    Future.delayed(const Duration(seconds: 1));
 
     setState(() {
       tasksList.sort((taskA, taskB) {
         if (taskA.isDone && !taskB.isDone) {
-          return 1; // A vem depois se B for false.
+          return 1; // taskA vem DEPOIS de taskB.
         } else if (!taskA.isDone && taskB.isDone) {
-          return -1; // A vem antes se B for true.
+          return -1; // taskA vem ANTES de taskB.
         } else {
           return 0;
         }
