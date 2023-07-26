@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:new_to_do_app/app/data/models/task_model.dart';
 import 'package:new_to_do_app/app/data/repositories/tasks_repository.dart';
@@ -217,7 +219,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget taskItemWidget(int index, TaskModel taskItem) {
     return Dismissible(
-      key: const ValueKey(0),
+      key: ValueKey(index),
       direction: DismissDirection.startToEnd,
       background: Container(
         color: Colors.red,
@@ -227,7 +229,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       onDismissed: (_) {
-        _deleteTask(index);
+        setState(() {
+          _deleteTask(index);
+        });
       },
       child: CheckboxListTile(
         secondary: CircleAvatar(
