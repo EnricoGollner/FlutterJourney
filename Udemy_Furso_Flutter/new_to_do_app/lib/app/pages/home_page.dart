@@ -75,6 +75,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
     ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
@@ -83,9 +84,9 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       tasksList.sort((taskA, taskB) {
-        if (taskA.isDone == true && taskB.isDone == false) {
+        if (taskA.isDone && !taskB.isDone) {
           return 1; // A vem depois se B for false.
-        } else if (taskA.isDone == false && taskB.isDone == true) {
+        } else if (!taskA.isDone && taskB.isDone) {
           return -1; // A vem antes se B for true.
         } else {
           return 0;
@@ -219,7 +220,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget taskItemWidget(int index, TaskModel taskItem) {
     return Dismissible(
-      key: ValueKey(index),
+      key: UniqueKey(),
       direction: DismissDirection.startToEnd,
       background: Container(
         color: Colors.red,
