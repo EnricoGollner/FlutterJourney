@@ -18,13 +18,16 @@ class _HomePageState extends State<HomePage> {
   final tasksRepository = TasksRepository();
 
   void _addTask() {
-    final taskName = _taskTextEditingController.text;
-    final TaskModel newTask = TaskModel(name: taskName, isDone: false);
-    setState(() {
-      tasksList.insert(0, newTask);
-    });
+    if (_formKey.currentState!.validate()) {
+      final taskName = _taskTextEditingController.text;
+      final TaskModel newTask = TaskModel(name: taskName, isDone: false);
+      setState(() {
+        // tasksList.insert(0, newTask);
+        tasksList.add(newTask);
+      });
 
-    tasksRepository.saveData(tasksList);
+      tasksRepository.saveData(tasksList);
+    }
   }
 
   void _deleteTask(int index) {
@@ -52,7 +55,7 @@ class _HomePageState extends State<HomePage> {
   }) {
     final snackBar = SnackBar(
       backgroundColor: Colors.red,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -71,6 +74,24 @@ class _HomePageState extends State<HomePage> {
     );
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    setState(() {
+      tasksList.sort((taskA, taskB) {
+        if (taskA.isDone == true && taskB.isDone == false) {
+          return 1; // A vem depois se B for false.
+        } else if (taskA.isDone == false && taskB.isDone == true) {
+          return -1; // A vem antes se B for true.
+        } else {
+          return 0;
+        }
+      });
+    });
+
+    tasksRepository.saveData(tasksList);
   }
 
   @override
@@ -109,6 +130,12 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.blueAccent,
                           ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Dê um nome à tarefa antes de adicioná-la.";
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
@@ -122,16 +149,19 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.only(top: 10),
-                  itemCount: tasksList.length,
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(height: 5);
-                  },
-                  itemBuilder: (context, index) {
-                    TaskModel currentTask = tasksList[index];
-                    return taskItemWidget(index, currentTask);
-                  },
+                child: RefreshIndicator(
+                  onRefresh: _refresh,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.only(top: 10),
+                    itemCount: tasksList.length,
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 5);
+                    },
+                    itemBuilder: (context, index) {
+                      TaskModel currentTask = tasksList[index];
+                      return taskItemWidget(index, currentTask);
+                    },
+                  ),
                 ),
               ),
               Row(
