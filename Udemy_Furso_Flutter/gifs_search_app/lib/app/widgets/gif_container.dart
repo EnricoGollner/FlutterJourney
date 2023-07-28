@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../data/models/gif_model.dart';
 import '../pages/gif_page.dart';
@@ -14,9 +15,10 @@ class GifContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Image.network(
-        gif.imageUrl,
-        height: 300.0,
+      child: FadeInImage.memoryNetwork(
+        placeholder: kTransparentImage,
+        image: gif.imageUrl,
+        height: 300,
         fit: BoxFit.cover,
       ),
       onTap: () {
