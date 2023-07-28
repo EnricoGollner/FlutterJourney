@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gifs_search_app/app/data/models/gif_model.dart';
 import 'package:gifs_search_app/app/data/repositories/gifs_repository.dart';
-import 'package:gifs_search_app/app/pages/gif_page.dart';
+
+import '../widgets/gif_container.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -87,8 +89,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _updateGifs() {
+    setState(() {
+      offset += 19;
+    });
+  }
+
   Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
-    final List<dynamic> data = snapshot.data["data"];
+    final List<GifModel> gifList = snapshot.data;
 
     return GridView.builder(
         padding: const EdgeInsets.all(10.0),
@@ -97,26 +105,14 @@ class _HomePageState extends State<HomePage> {
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),
-        itemCount: _getCount(data),
+        itemCount: _getCount(gifList),
         itemBuilder: (context, index) {
-          if (search == null || index < data.length) {
-            return GestureDetector(
-              child: Image.network(
-                data[index]["images"]["fixed_height"]["url"],
-                height: 300.0,
-                fit: BoxFit.cover,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GifPage(gifData: data[index]),
-                  ),
-                );
-              },
-            );
+          if (search == null || index < gifList.length) {
+            final GifModel currentGif = gifList[index];
+            return GifContainer(gif: currentGif);
           } else {
             return GestureDetector(
+              onTap: _updateGifs,
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -134,11 +130,6 @@ class _HomePageState extends State<HomePage> {
                   )
                 ],
               ),
-              onTap: () {
-                setState(() {
-                  offset += 19;
-                });
-              },
             );
           }
         });
