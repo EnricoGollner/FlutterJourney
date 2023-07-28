@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../controller/share_controller.dart';
 import '../data/models/gif_model.dart';
 
 class GifPage extends StatelessWidget {
@@ -14,6 +15,14 @@ class GifPage extends StatelessWidget {
         title: Text(
           gifData.title,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              ShareController.shareGif(gifUrl: gifData.imageUrl);
+            },
+            icon: const Icon(Icons.share),
+          ),
+        ],
       ),
       body: Center(
         child: Image.network(gifData.imageUrl),

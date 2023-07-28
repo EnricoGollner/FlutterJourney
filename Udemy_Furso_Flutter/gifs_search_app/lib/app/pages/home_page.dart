@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           if (search == null || index < gifList.length) {
             final GifModel currentGif = gifList[index];
-            return GifContainer(gif: currentGif);
+            return GifContainer(gifData: currentGif);
           } else {
             return GestureDetector(
               onTap: _updateGifs,
