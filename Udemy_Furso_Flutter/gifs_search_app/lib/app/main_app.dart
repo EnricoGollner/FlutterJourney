@@ -9,6 +9,11 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.black,
+          centerTitle: true,
+        ),
+        scaffoldBackgroundColor: Colors.black,
         hintColor: Colors.white,
         inputDecorationTheme: const InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
