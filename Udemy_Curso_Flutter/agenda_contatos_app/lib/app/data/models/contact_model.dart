@@ -1,8 +1,4 @@
-const String idColumn = "idColumn";
-const String nameColumn = "nameColumn";
-const String emailColumn = "emailColumn";
-const String phoneColumn = "phoneColumn";
-const String imgColumn = "imgColumn";
+import 'package:agenda_contatos_app/app/utils/db_utils.dart';
 
 class ContactModel {
   int? id;
@@ -19,27 +15,25 @@ class ContactModel {
     required this.img,
   });
 
-  factory ContactModel.fromMap(Map map) {
+  factory ContactModel.fromMap(Map<String, dynamic> map) {
     return ContactModel(
-      id: map[idColumn],
-      name: map[nameColumn],
-      email: map[emailColumn],
-      phone: map[phoneColumn],
-      img: map[imgColumn],
+      id: map[DBUtils.idColumn],
+      name: map[DBUtils.nameColumn],
+      email: map[DBUtils.emailColumn],
+      phone: map[DBUtils.phoneColumn],
+      img: map[DBUtils.imgColumn],
     );
   }
 
-  Map toMap() {
+  Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
-      nameColumn: name,
-      emailColumn: email,
-      phoneColumn: phone,
-      imgColumn: img
+      DBUtils.nameColumn: name,
+      DBUtils.emailColumn: email,
+      DBUtils.phoneColumn: phone,
+      DBUtils.imgColumn: img,
     };
 
-    if (id != null) {
-      map[idColumn] = id;
-    }
+    if (id != null) map[DBUtils.idColumn] = id;
 
     return map;
   }

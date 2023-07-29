@@ -1,3 +1,5 @@
+import 'package:agenda_contatos_app/app/data/helpers/contact_helper.dart';
+import 'package:agenda_contatos_app/app/data/models/contact_model.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,6 +10,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  ContactHelper helper = ContactHelper();
+
+  @override
+  void initState() {
+    super.initState();
+
+    ContactModel contactTeste = ContactModel(
+      name: "Enrico",
+      email: "enricogollner.tech@gmail.com",
+      phone: "27999999999",
+      img: "imgTestando",
+    );
+
+    helper.saveContact(contactTeste);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
