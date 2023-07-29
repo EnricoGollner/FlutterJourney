@@ -15,15 +15,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    ContactModel contactTeste = ContactModel(
-      name: "Enrico",
-      email: "enricogollner.tech@gmail.com",
-      phone: "27999999999",
-      img: "imgTestando",
-    );
-
-    helper.saveContact(contactTeste);
   }
 
   @override

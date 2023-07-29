@@ -30,9 +30,7 @@ class ContactHelper {
       path,
       version: 1,
       onCreate: (Database db, int newerVersion) async {
-        await db.execute(
-          "CREATE TABLE ${DBUtils.contactsTable}(${DBUtils.idColumn} INTEGER PRIMARY KEY, ${DBUtils.nameColumn} TEXT, ${DBUtils.emailColumn} TEXT, ${DBUtils.phoneColumn} TEXT, ${DBUtils.imgColumn} TEXT)",
-        );
+        await db.execute(DBUtils.createTableQuery);
       },
     );
   }
