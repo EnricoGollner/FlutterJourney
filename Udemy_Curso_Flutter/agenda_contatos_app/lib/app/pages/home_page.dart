@@ -1,7 +1,9 @@
 import 'package:agenda_contatos_app/app/data/helpers/contact_helper.dart';
 import 'package:agenda_contatos_app/app/data/models/contact_model.dart';
-import 'package:agenda_contatos_app/app/utils/db_utils.dart';
+
 import 'package:flutter/material.dart';
+
+import '../widgets/contact_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,10 +14,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ContactHelper helper = ContactHelper();
+  List<ContactModel> contactsList = [];
 
   @override
   void initState() {
     super.initState();
+
+    helper.getAllContacts().then((list) {
+      setState(() {
+        contactsList = list ?? [];
+      });
+    });
   }
 
   @override
@@ -30,11 +39,27 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: const Center(
-        child: Text("Hello"),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(10),
+        itemCount: contactsList.length,
+        itemBuilder: (context, index) {
+          final ContactModel currentContact = contactsList[index];
+
+          return ContactCard(currentContact: currentContact);
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          ContactModel contact = ContactModel(
+            name: "Enrico",
+            email: "top@dev.com",
+            phone: "25 1552 2211",
+          );
+
+          setState(() {
+            helper.saveContact(contact);
+          });
+        },
         child: const Icon(Icons.add),
       ),
     );

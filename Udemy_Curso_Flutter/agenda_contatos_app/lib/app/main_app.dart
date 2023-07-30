@@ -1,4 +1,4 @@
-import 'package:agenda_contatos_app/app/pages/home_page.dart';
+import 'package:agenda_contatos_app/app/pages/contact_page.dart';
 import 'package:flutter/material.dart';
 
 class MainApp extends StatelessWidget {
@@ -8,9 +8,11 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.red),
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
       title: "Agenda de Contatos",
-      home: const HomePage(),
+      home: const ContactPage(),
     );
   }
 }

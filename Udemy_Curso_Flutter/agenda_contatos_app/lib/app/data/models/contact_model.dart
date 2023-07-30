@@ -2,10 +2,18 @@ import 'package:agenda_contatos_app/app/utils/db_utils.dart';
 
 class ContactModel {
   int? id;
-  String name;
-  String email;
-  String phone;
-  String img;
+  String? name;
+  String? email;
+  String? phone;
+  String? img;
+
+  ContactModel({
+    this.id,
+    this.name,
+    this.email,
+    this.phone,
+    this.img,
+  });
 
   ContactModel.fromMap(Map<String, dynamic> map)
       : id = map[DBUtils.idColumn],
@@ -29,6 +37,6 @@ class ContactModel {
 
   @override
   String toString() {
-    return "Contato: id: $id, name: $name, email: $email, phone: $phone, img: $img";
+    return "Contato(id: $id, name: $name, email: $email, phone: $phone, img: $img)";
   }
 }

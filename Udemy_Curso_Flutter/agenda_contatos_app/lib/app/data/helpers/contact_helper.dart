@@ -5,10 +5,14 @@ import '../../utils/db_utils.dart';
 import '../models/contact_model.dart';
 
 class ContactHelper {
-  // Singleton (Apenas uma instância para toda a aplicação):
-  static final ContactHelper _instance = ContactHelper.internal();
-  factory ContactHelper() => _instance;
-  ContactHelper.internal();
+  // Singleton (Apenas uma instância para toda a aplicação) -
+  static final ContactHelper _instance = ContactHelper
+      .internal(); // chamando o construtor interno para armazená-lo
+
+  ContactHelper.internal(); // construtor interno criado
+
+  factory ContactHelper() =>
+      _instance; // factory constructor que retorna a instância armazenada na variável _instance.
 
   Database? _db;
 
