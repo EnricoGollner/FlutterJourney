@@ -1,5 +1,6 @@
 import 'package:agenda_contatos_app/app/data/helpers/contact_helper.dart';
 import 'package:agenda_contatos_app/app/data/models/contact_model.dart';
+import 'package:agenda_contatos_app/app/utils/db_utils.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

@@ -7,23 +7,12 @@ class ContactModel {
   String phone;
   String img;
 
-  ContactModel({
-    this.id,
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.img,
-  });
-
-  factory ContactModel.fromMap(Map<String, dynamic> map) {
-    return ContactModel(
-      id: map[DBUtils.idColumn],
-      name: map[DBUtils.nameColumn],
-      email: map[DBUtils.emailColumn],
-      phone: map[DBUtils.phoneColumn],
-      img: map[DBUtils.imgColumn],
-    );
-  }
+  ContactModel.fromMap(Map<String, dynamic> map)
+      : id = map[DBUtils.idColumn],
+        name = map[DBUtils.nameColumn],
+        email = map[DBUtils.emailColumn],
+        phone = map[DBUtils.phoneColumn],
+        img = map[DBUtils.imgColumn];
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
@@ -40,6 +29,6 @@ class ContactModel {
 
   @override
   String toString() {
-    return "Contact(id: $id, name: $name, email: $email, phone: $phone, img: $img)";
+    return "Contato: id: $id, name: $name, email: $email, phone: $phone, img: $img";
   }
 }
