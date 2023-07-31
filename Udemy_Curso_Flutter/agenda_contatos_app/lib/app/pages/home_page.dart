@@ -1,3 +1,4 @@
+import 'package:agenda_contatos_app/app/controllers/home_controller.dart';
 import 'package:agenda_contatos_app/app/data/helpers/contact_helper.dart';
 import 'package:agenda_contatos_app/app/data/models/contact_model.dart';
 
@@ -13,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ContactHelper helper = ContactHelper();
+  final ContactHelper helper = ContactHelper();
   List<ContactModel> contactsList = [];
 
   @override
@@ -29,6 +30,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final HomePageController controller = HomePageController(context: context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Contatos"),
@@ -45,20 +48,15 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           final ContactModel currentContact = contactsList[index];
 
-          return ContactCard(currentContact: currentContact);
+          return ContactCard(
+            controller: controller,
+            contact: currentContact,
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ContactModel contact = ContactModel(
-            name: "Enrico",
-            email: "top@dev.com",
-            phone: "25 1552 2211",
-          );
-
-          setState(() {
-            helper.saveContact(contact);
-          });
+          controller.showContactPage();
         },
         child: const Icon(Icons.add),
       ),

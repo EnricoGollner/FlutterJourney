@@ -1,3 +1,4 @@
+import 'package:agenda_contatos_app/app/controllers/home_controller.dart';
 import 'package:agenda_contatos_app/app/widgets/contact_image.dart';
 import 'package:flutter/material.dart';
 
@@ -6,10 +7,11 @@ import '../data/models/contact_model.dart';
 class ContactCard extends StatelessWidget {
   const ContactCard({
     super.key,
-    required this.currentContact,
+    required this.controller,
+    required this.contact,
   });
-
-  final ContactModel currentContact;
+  final HomePageController controller;
+  final ContactModel contact;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class ContactCard extends StatelessWidget {
             child: Row(
               children: [
                 ContactImage(
-                  contact: currentContact,
+                  contact: contact,
                   width: 80,
                   height: 80,
                 ),
@@ -30,18 +32,18 @@ class ContactCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        currentContact.name ?? "",
+                        contact.name ?? "",
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        currentContact.email ?? "",
+                        contact.email ?? "",
                         style: const TextStyle(fontSize: 15),
                       ),
                       Text(
-                        currentContact.phone ?? "",
+                        contact.phone ?? "",
                         style: const TextStyle(fontSize: 15),
                       )
                     ],
@@ -50,6 +52,9 @@ class ContactCard extends StatelessWidget {
               ],
             )),
       ),
+      onTap: () {
+        controller.showContactPage(contact: contact);
+      },
     );
   }
 }
