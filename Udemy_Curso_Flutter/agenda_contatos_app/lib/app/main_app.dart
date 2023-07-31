@@ -8,7 +8,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.red),
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
       title: "Agenda de Contatos",
       home: const HomePage(),
     );
