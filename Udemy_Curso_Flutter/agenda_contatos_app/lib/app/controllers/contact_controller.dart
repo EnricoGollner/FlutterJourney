@@ -1,4 +1,6 @@
+import 'package:agenda_contatos_app/app/data/models/contact_model.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ContactController {
   Future<bool> requestPop(BuildContext context, bool edditedUser) {

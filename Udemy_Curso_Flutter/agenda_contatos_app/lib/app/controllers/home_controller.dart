@@ -50,71 +50,72 @@ class HomePageController extends ChangeNotifier {
   void showOtptionsToContact(BuildContext context, contact) {
     showModalBottomSheet(
         context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
         builder: (context) {
-          return BottomSheet(
-              onClosing: () {},
-              builder: (context) {
-                return Container(
+          return Container(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
                   padding: const EdgeInsets.all(10),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        child: TextButton(
-                          onPressed: () {
-                            makeCall(context, contact);
-                          },
-                          child: const Text(
-                            "Ligar",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
+                  child: TextButton(
+                    onPressed: () {
+                      makeCall(context, contact);
+                    },
+                    child: const Text(
+                      "Ligar",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20,
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            showContactPage(
-                              context: context,
-                              contact: contact,
-                            );
-                          },
-                          child: const Text(
-                            "Editar",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 20.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        child: TextButton(
-                          onPressed: () {
-                            helper.deleteContactById(contact.id);
-                            contactsList.value.remove(contact);
-                            Navigator.pop(context);
-                            getContacts();
-                          },
-                          child: const Text(
-                            "Excluir",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 20.0,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                );
-              });
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      showContactPage(
+                        context: context,
+                        contact: contact,
+                      );
+                    },
+                    child: const Text(
+                      "Editar",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextButton(
+                    onPressed: () {
+                      helper.deleteContactById(contact.id);
+                      contactsList.value.remove(contact);
+                      Navigator.pop(context);
+                      getContacts();
+                    },
+                    child: const Text(
+                      "Excluir",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
         });
   }
 

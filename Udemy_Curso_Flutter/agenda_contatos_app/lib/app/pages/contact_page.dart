@@ -24,7 +24,7 @@ class _ContactPageState extends State<ContactPage> {
 
   final _nameFocus = FocusNode();
 
-  bool userEditted = false;
+  bool userEdited = false;
 
   late ContactModel _editedContact;
 
@@ -45,7 +45,7 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => controller.requestPop(context, userEditted),
+      onWillPop: () => controller.requestPop(context, userEdited),
       child: Scaffold(
         appBar: AppBar(
           title: Text(_editedContact.name),
@@ -57,17 +57,81 @@ class _ContactPageState extends State<ContactPage> {
             children: [
               GestureDetector(
                 onTap: () {
-                  ImagePicker()
-                      .pickImage(source: ImageSource.camera)
-                      .then((file) {
-                    if (file == null) {
-                      return;
-                    } else {
-                      setState(() {
-                        _editedContact.img = file.path;
-                      });
-                    }
-                  });
+                  final picker = ImagePicker();
+
+                  showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    builder: (context) {
+                      return Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              child: TextButton(
+                                onPressed: () {
+                                  picker
+                                      .pickImage(source: ImageSource.camera)
+                                      .then((file) {
+                                    if (file != null) {
+                                      setState(() {
+                                        _editedContact.img = file.path;
+                                        userEdited = true;
+                                      });
+                                      Navigator.pop(context);
+                                    }
+                                  });
+                                },
+                                child: const Text(
+                                  "Tirar Foto",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              child: TextButton(
+                                onPressed: () {
+                                  picker
+                                      .pickImage(source: ImageSource.gallery)
+                                      .then((file) {
+                                    if (file != null) {
+                                      setState(() {
+                                        _editedContact.img = file.path;
+                                        userEdited = true;
+                                      });
+                                      Navigator.pop(context);
+                                    }
+                                  });
+                                },
+                                child: const Text(
+                                  "Selecionar da Galeria",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+
+                  // ImagePicker()
+                  //     .pickImage(source: ImageSource.camera)
+                  //     .then((file) {
+
+                  //   if (file == null) {
+                  //     return;
+                  //   } else {
+                  //     setState(() {
+                  //       _editedContact.img = file.path;
+                  //     });
+                  //   }
+                  // });
                 },
                 child: ContactImage(
                   contact: _editedContact,
@@ -90,7 +154,7 @@ class _ContactPageState extends State<ContactPage> {
                         return null;
                       },
                       onChanged: (text) {
-                        userEditted = true;
+                        userEdited = true;
                         setState(() {
                           _editedContact.name = text;
                         });
@@ -101,7 +165,7 @@ class _ContactPageState extends State<ContactPage> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(labelText: "E-mail"),
                       onChanged: (text) {
-                        userEditted = true;
+                        userEdited = true;
                         _editedContact.email = text;
                       },
                     ),
@@ -110,7 +174,7 @@ class _ContactPageState extends State<ContactPage> {
                       keyboardType: TextInputType.phone,
                       decoration: const InputDecoration(labelText: "Phone"),
                       onChanged: (text) {
-                        userEditted = true;
+                        userEdited = true;
                         _editedContact.phone = text;
                       },
                     ),
