@@ -17,7 +17,8 @@ class ContactCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        controller.showContactPage(context: context, contact: contact);
+        int index = controller.contactsList.value.indexOf(contact);
+        controller.showOtptionsToContact(context, index);
       },
       child: Card(
         child: Container(

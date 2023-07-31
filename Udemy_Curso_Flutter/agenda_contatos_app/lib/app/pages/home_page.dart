@@ -16,14 +16,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ContactHelper helper = ContactHelper();
   late final HomePageController controller;
-  List<ContactModel> contactsList = [];
 
   @override
   void initState() {
     super.initState();
 
     controller = HomePageController(helper: helper);
-
     controller.getContacts();
   }
 
