@@ -12,9 +12,13 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
+  final _formKey = GlobalKey<FormState>();
+
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+
+  final _nameFocus = FocusNode();
 
   bool _userEditted = false;
 
@@ -24,7 +28,7 @@ class _ContactPageState extends State<ContactPage> {
   void initState() {
     super.initState();
     if (widget.contact == null) {
-      _editedContact = ContactModel(name: "Teste");
+      _editedContact = ContactModel();
     } else {
       _editedContact = ContactModel.fromMap(widget.contact!.toMap());
 
@@ -53,17 +57,26 @@ class _ContactPageState extends State<ContactPage> {
               ),
             ),
             Form(
+              key: _formKey,
               child: Column(
                 children: [
                   TextFormField(
                     controller: _nameController,
+                    focusNode: _nameFocus,
                     decoration: const InputDecoration(labelText: "Name"),
+                    validator: (text) {
+                      if (text == null || text.isEmpty) {
+                        return "O nome do contato é obrigatório";
+                      }
+                    },
                     onChanged: (text) {
                       _userEditted = true;
                       setState(() {
-                        text.isEmpty
-                            ? _editedContact.name = "Novo Contato"
-                            : _editedContact.name = text;
+                        _editedContact.name = text;
+
+                        // text.isEmpty
+                        //     ? _editedContact.name = "Novo Contato"
+                        //     : _editedContact.name = text;
                       });
                     },
                   ),
@@ -92,7 +105,16 @@ class _ContactPageState extends State<ContactPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          if (_formKey.currentState!.validate() &&
+              _editedContact.name != null &&
+              _editedContact.name!.isNotEmpty) {
+            Navigator.pop(context,
+                _editedContact); // Retornando contato editado, caso tenha sido editado
+          } else {
+            FocusScope.of(context).requestFocus(_nameFocus);
+          }
+        },
         child: const Icon(Icons.save),
       ),
     );
