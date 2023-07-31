@@ -1,5 +1,7 @@
+import 'package:agenda_contatos_app/app/controllers/contact_controller.dart';
 import 'package:agenda_contatos_app/app/widgets/contact_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../data/models/contact_model.dart';
 
@@ -12,6 +14,8 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
+  final controller = ContactController();
+
   final _formKey = GlobalKey<FormState>();
 
   final _nameController = TextEditingController();
@@ -20,7 +24,7 @@ class _ContactPageState extends State<ContactPage> {
 
   final _nameFocus = FocusNode();
 
-  bool _userEditted = false;
+  bool userEditted = false;
 
   late ContactModel _editedContact;
 
@@ -32,50 +36,19 @@ class _ContactPageState extends State<ContactPage> {
     } else {
       _editedContact = ContactModel.fromMap(widget.contact!.toMap());
 
-      _nameController.text = _editedContact.name!;
+      _nameController.text = _editedContact.name;
       _emailController.text = _editedContact.email!;
       _phoneController.text = _editedContact.phone!;
-    }
-  }
-
-  Future<bool> _requestPop() {
-    if (_userEditted) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("Descartar Alterações?"),
-              content: const Text("Se sair, as alterações serão perdidas!"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancelar"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // sair da alert
-                    Navigator.pop(context); // sair da ContactPage
-                  },
-                  child: const Text("Sair"),
-                )
-              ],
-            );
-          });
-      return Future.value(false);
-    } else {
-      return Future.value(true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _requestPop,
+      onWillPop: () => controller.requestPop(context, userEditted),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_editedContact.name ?? "Novo Contato"),
+          title: Text(_editedContact.name),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -83,6 +56,19 @@ class _ContactPageState extends State<ContactPage> {
           child: Column(
             children: [
               GestureDetector(
+                onTap: () {
+                  ImagePicker()
+                      .pickImage(source: ImageSource.camera)
+                      .then((file) {
+                    if (file == null) {
+                      return;
+                    } else {
+                      setState(() {
+                        _editedContact.img = file.path;
+                      });
+                    }
+                  });
+                },
                 child: ContactImage(
                   contact: _editedContact,
                   width: 140,
@@ -104,7 +90,7 @@ class _ContactPageState extends State<ContactPage> {
                         return null;
                       },
                       onChanged: (text) {
-                        _userEditted = true;
+                        userEditted = true;
                         setState(() {
                           _editedContact.name = text;
                         });
@@ -115,7 +101,7 @@ class _ContactPageState extends State<ContactPage> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(labelText: "E-mail"),
                       onChanged: (text) {
-                        _userEditted = true;
+                        userEditted = true;
                         _editedContact.email = text;
                       },
                     ),
@@ -124,7 +110,7 @@ class _ContactPageState extends State<ContactPage> {
                       keyboardType: TextInputType.phone,
                       decoration: const InputDecoration(labelText: "Phone"),
                       onChanged: (text) {
-                        _userEditted = true;
+                        userEditted = true;
                         _editedContact.phone = text;
                       },
                     ),
@@ -137,8 +123,7 @@ class _ContactPageState extends State<ContactPage> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             if (_formKey.currentState!.validate() &&
-                _editedContact.name != null &&
-                _editedContact.name!.isNotEmpty) {
+                _editedContact.name.isNotEmpty) {
               Navigator.pop(context,
                   _editedContact); // Retornando contato editado, caso tenha sido editado
             } else {

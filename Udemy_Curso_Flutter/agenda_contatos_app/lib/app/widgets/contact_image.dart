@@ -26,6 +26,7 @@ class ContactImage extends StatelessWidget {
           image: contact.img != null
               ? FileImage(File(contact.img!)) as ImageProvider
               : const AssetImage("assets/images/person.png"),
+          fit: BoxFit.cover,
         ),
       ),
     );

@@ -2,14 +2,14 @@ import 'package:agenda_contatos_app/app/utils/db_utils.dart';
 
 class ContactModel {
   int? id;
-  String? name;
+  String name;
   String? email;
   String? phone;
   String? img;
 
   ContactModel({
     this.id,
-    this.name,
+    this.name = "Novo Contato",
     this.email,
     this.phone,
     this.img,

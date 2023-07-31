@@ -30,11 +30,25 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Contatos"),
+        centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
-          ),
+          PopupMenuButton<OrderOptions>(
+            itemBuilder: (context) {
+              return <PopupMenuEntry<OrderOptions>>[
+                const PopupMenuItem<OrderOptions>(
+                  value: OrderOptions.orderaz,
+                  child: Text("Ordenar de A-Z"),
+                ),
+                const PopupMenuItem<OrderOptions>(
+                  value: OrderOptions.orderza,
+                  child: Text("Ordenar de Z-A"),
+                )
+              ];
+            },
+            onSelected: (value) {
+              controller.orderList(value);
+            },
+          )
         ],
       ),
       body: ValueListenableBuilder(
