@@ -16,6 +16,9 @@ class ContactCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        controller.showContactPage(context: context, contact: contact);
+      },
       child: Card(
         child: Container(
             padding: const EdgeInsets.all(10),
@@ -52,9 +55,6 @@ class ContactCard extends StatelessWidget {
               ],
             )),
       ),
-      onTap: () {
-        controller.showContactPage(contact: contact);
-      },
     );
   }
 }

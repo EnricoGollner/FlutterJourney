@@ -1,4 +1,3 @@
-import 'package:agenda_contatos_app/app/controllers/home_controller.dart';
 import 'package:agenda_contatos_app/app/widgets/contact_image.dart';
 import 'package:flutter/material.dart';
 

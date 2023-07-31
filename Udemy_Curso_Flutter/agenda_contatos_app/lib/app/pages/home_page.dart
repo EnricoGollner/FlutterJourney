@@ -15,23 +15,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ContactHelper helper = ContactHelper();
+  late final HomePageController controller;
   List<ContactModel> contactsList = [];
 
   @override
   void initState() {
     super.initState();
 
-    helper.getAllContacts().then((list) {
-      setState(() {
-        contactsList = list ?? [];
-      });
-    });
+    controller = HomePageController(helper: helper);
+
+    controller.getContacts();
   }
 
   @override
   Widget build(BuildContext context) {
-    final HomePageController controller = HomePageController(context: context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Contatos"),
@@ -42,21 +39,26 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: contactsList.length,
-        itemBuilder: (context, index) {
-          final ContactModel currentContact = contactsList[index];
+      body: ValueListenableBuilder(
+        valueListenable: controller.contactsList,
+        builder: (BuildContext context, value, Widget? child) {
+          return ListView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: value.length,
+            itemBuilder: (context, index) {
+              final ContactModel currentContact = value[index];
 
-          return ContactCard(
-            controller: controller,
-            contact: currentContact,
+              return ContactCard(
+                controller: controller,
+                contact: currentContact,
+              );
+            },
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          controller.showContactPage();
+          controller.showContactPage(context: context);
         },
         child: const Icon(Icons.add),
       ),
