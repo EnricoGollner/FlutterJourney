@@ -35,7 +35,7 @@ class ContactCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        contact.name ?? "",
+                        contact.name,
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
