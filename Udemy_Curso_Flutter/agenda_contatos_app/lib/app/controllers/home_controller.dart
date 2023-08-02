@@ -136,9 +136,9 @@ class HomePageController extends ChangeNotifier {
         break;
       case OrderOptions.orderza:
         lContacts.sort((a, b) {
-          return b.name.toLowerCase().compareTo(a.name);
+          return b.name.toLowerCase().compareTo(a.name.toLowerCase());
         });
-        contactsList.value = lContacts;
+        contactsList.value = lContacts.toList();
         break;
     }
   }
