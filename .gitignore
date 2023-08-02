@@ -29,3 +29,6 @@ doc/api/
 
 **/.DS_Store
 **/key.properties
+
+# firebase
+google-services.json
