@@ -42,7 +42,6 @@ class _LoginPageState extends State<LoginPage> {
 
 class _body extends StatelessWidget {
   const _body({
-    super.key,
     required GlobalKey<FormState> formKey,
     required TextEditingController emailFormController,
     required TextEditingController passFormController,
@@ -110,6 +109,7 @@ class LoginForm extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
               ),
             ),
+            style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 15),
           TextFormField(
@@ -121,6 +121,7 @@ class LoginForm extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
               ),
             ),
+            style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 20),
           ElevatedButton(

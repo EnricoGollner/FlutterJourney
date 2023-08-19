@@ -19,6 +19,12 @@ class MainApp extends StatelessWidget {
           title: 'Flutterando',
           theme: ThemeData(
             primarySwatch: Colors.red,
+            inputDecorationTheme: const InputDecorationTheme(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              labelStyle: TextStyle(color: Colors.white),
+            ),
             brightness: AppController.instance.isDarkTheme
                 ? Brightness.dark
                 : Brightness.light,
