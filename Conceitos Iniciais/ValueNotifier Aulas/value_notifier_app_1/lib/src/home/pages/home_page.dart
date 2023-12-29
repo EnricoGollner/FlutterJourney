@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:value_notifier_app_1/src/home/controller/counter_padronizacao_value_notifier.dart';
+import 'package:value_notifier_app_1/src/home/controller/counter_value_notifier.dart';
 // import 'package:value_notifier_app_1/app/controller/home_controller_change_notifier.dart';
 
 class HomePage extends StatefulWidget {
