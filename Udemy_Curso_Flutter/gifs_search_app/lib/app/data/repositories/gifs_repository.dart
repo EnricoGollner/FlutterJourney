@@ -23,7 +23,7 @@ class GifsRepository {
     String apiKey = dotenv.env["API_KEY"]!;
 
     if (search == null) {
-      response = await httpClient.get(url: "https://api.giphy.com/v1/gifs/trending?api_key=M5aofUBX7sU5uRE78ObQHC5AxojGorMg&limit=20&offset=0&rating=g&bundle=messaging_non_clips");
+      response = await httpClient.get(url: "https://api.giphy.com/v1/gifs/trending?api_key=$apiKey&limit=20&offset=0&rating=g&bundle=messaging_non_clips");
     } else {
       response = await httpClient.get(url: "https://api.giphy.com/v1/gifs/search?api_key=$apiKey=$search&limit=19&offset=$offset&rating=g&lang=en&bundle=messaging_non_clips");
     }
