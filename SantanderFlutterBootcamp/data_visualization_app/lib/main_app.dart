@@ -1,4 +1,4 @@
-import 'package:data_visualization_app/pages/register_page.dart';
+import 'package:data_visualization_app/pages/home_page.dart';
 import 'package:data_visualization_app/shared/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,7 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: generateRoutes,
-      home: RegisterPage(),
+      home: HomePage(),
     );
   }
 }
