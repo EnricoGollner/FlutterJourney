@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 const String homePage = '/homePage';
 const String registerPage = '/registerPage';
 
-Route<dynamic>? generateRoutes(settings) {
+Route<dynamic>? generateRoutes(RouteSettings settings) {
   switch (settings.name) {
     case '/homePage':
       return MaterialPageRoute(builder: (_) => const HomePage());
@@ -15,7 +15,7 @@ Route<dynamic>? generateRoutes(settings) {
       return MaterialPageRoute(
           builder: (_) => const Scaffold(
                 body: Center(
-                  child: Text('No routes founded'),
+                  child: Text('No routes founded!'),
                 ),
         ),
       );
