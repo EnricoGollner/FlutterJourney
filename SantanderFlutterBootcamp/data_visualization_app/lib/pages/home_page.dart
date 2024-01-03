@@ -3,8 +3,15 @@ import 'package:data_visualization_app/shared/routes.dart';
 import 'package:data_visualization_app/shared/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<String>? imagesPaths = ImageRepository.getImagesPaths();
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +36,14 @@ class HomePage extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, cardDetailPage, arguments: index);
+                          Navigator.pushNamed(context, cardDetailPage,
+                              arguments: index);
                         },
                         child: Hero(
                           tag: index,
-                          child: CircleAvatar(backgroundImage: AssetImage(ImageRepository.getImagesPaths()[index]),
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage(
+                                ImageRepository.getImagesPaths()[index]),
                           ),
                         ),
                       ),
