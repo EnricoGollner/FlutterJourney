@@ -1,4 +1,4 @@
-import 'package:camera_qrcode_app/app/qr_code/qr_code_page.dart';
+import 'package:camera_qrcode_app/app/home_page.dart';
 import 'package:flutter/material.dart';
 
 class MainApp extends StatelessWidget {
@@ -8,7 +8,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: QRCodePage()
+      home: HomePage(),
     );
   }
 }
