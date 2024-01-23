@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+// import 'package:path_provider/path_provider.dart';
+// import 'package:path/path.dart';
+// import 'package:gallery_saver/gallery_saver.dart';
 import 'package:picture_gallery_app/app/pages/widgets/custom_profile_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -71,9 +72,37 @@ class _HomePageState extends State<HomePage> {
 
         // Using Gallery Saver package to save images into galery (android.permission.WRITE_EXTERNAL_STORAGE required - AndroidManifest.xml)
         // GallerySaver.saveImage(xFile.path);
-
-        setState(() => _image = File(xFile.path));
+        
+        await cropImage(xFile).then((croppedImageFile) {
+          if (croppedImageFile != null) {
+            setState(() =>  _image = File(croppedImageFile.path));
+          }
+        });     
       }
     });
+  }
+
+  Future<CroppedFile?> cropImage(XFile file) async {
+    return await ImageCropper().cropImage(
+      sourcePath: file.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+      ],
+    );
   }
 }
