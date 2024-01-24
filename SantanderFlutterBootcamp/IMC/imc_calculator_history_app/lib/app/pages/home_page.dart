@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(title: const Text("IMC Calculator"), centerTitle: true),
+      appBar: AppBar(title: const Text("IMC Calculator"), centerTitle: true),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                     return Column(
                       children: [
                         Text(snapshotState.data is IMCCalculateSuccessState ? 'Classificação: ${(snapshotState.data as IMCCalculateSuccessState).classificacao}' : ''),
-                        Text(_showIMC(state: snapshotState.data ?? IMCCalculateInitialState(iMCsList: []))),
+                        Text(_showIMC(state: snapshotState.data ?? IMCCalculateInitialState())),
                         
                         SizedBox(
                           height: 200,
@@ -134,8 +134,8 @@ class _HomePageState extends State<HomePage> {
 
     _bloc.input.add(IMCCalculateAddIMCEvent(height, weight));
 
-    // _weightTextController.clear();
-    // _heightTextController.clear();
+    _weightTextController.clear();
+    _heightTextController.clear();
   }
 
   String _showIMC({required IMCCalculateState state}) {

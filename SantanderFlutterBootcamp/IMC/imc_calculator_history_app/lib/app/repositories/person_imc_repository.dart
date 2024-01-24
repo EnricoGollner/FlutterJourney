@@ -15,9 +15,9 @@ class PersonIMCRepository implements IPersonIMCRepository{
   final List<PersonIMC> iMCsList = [];
 
   @override
-  Future<List<PersonIMC>> saveIMC({required PersonIMC personIMC}) async{
+  Future<List<PersonIMC>> saveIMC({required PersonIMC personIMC}) async {
     final Database db = await _dbRepository.getDatabase();
-    await db.rawInsert('INSERT INTO ${DBUtils.imcTable} (height, weight, imc, date) VALUES (?, ?, ?, ?, ?)', [personIMC.height, personIMC.weight, personIMC.imc, personIMC.date]);
+    await db.rawInsert('INSERT INTO ${DBUtils.imcTable} (height, weight, imc, date) VALUES (?, ?, ?, ?)', [personIMC.height, personIMC.weight, personIMC.imc, personIMC.date]);
     iMCsList.add(personIMC);
 
     return iMCsList;

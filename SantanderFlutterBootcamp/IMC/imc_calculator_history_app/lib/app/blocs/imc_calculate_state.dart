@@ -7,7 +7,7 @@ abstract class IMCCalculateState {
 }
 
 class IMCCalculateInitialState extends IMCCalculateState {
-  IMCCalculateInitialState({required super.iMCsList});
+  IMCCalculateInitialState({super.iMCsList = const []});
 }
 
 class IMCCalculateLoadingState extends IMCCalculateState {
