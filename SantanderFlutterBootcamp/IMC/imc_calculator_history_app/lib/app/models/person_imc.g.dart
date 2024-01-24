@@ -8,7 +8,7 @@ part of 'person_imc.dart';
 
 _$PersonIMCImpl _$$PersonIMCImplFromJson(Map<String, dynamic> json) =>
     _$PersonIMCImpl(
-      id: json['id'] as int,
+      id: json['id'] as int?,
       height: (json['height'] as num).toDouble(),
       weight: (json['weight'] as num).toDouble(),
       imc: (json['imc'] as num).toDouble(),

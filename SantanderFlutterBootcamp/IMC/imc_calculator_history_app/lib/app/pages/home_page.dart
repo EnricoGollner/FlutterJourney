@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:imc_calculator_history_app/app/controllers/imc_calculate_controller.dart';
+import 'package:imc_calculator_history_app/app/blocs/imc_bloc.dart';
+import 'package:imc_calculator_history_app/app/blocs/imc_calculate_event.dart';
+import 'package:imc_calculator_history_app/app/blocs/imc_calculate_state.dart';
+import 'package:imc_calculator_history_app/app/models/person_imc.dart';
 import 'package:imc_calculator_history_app/app/pages/widgets/custom_card_imc.dart';
 import 'package:imc_calculator_history_app/app/pages/widgets/custom_text_field.dart';
+import 'package:imc_calculator_history_app/core/util/decimal_text_input_formatter.dart';
+import 'package:imc_calculator_history_app/core/util/formatters.dart';
 import 'package:imc_calculator_history_app/core/util/validator_util.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,68 +17,132 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _weightTextController = TextEditingController();
-  final _heightTextController = TextEditingController();
-
-  late IMCCalculateController _controller;
+  late IMCCalculateBloc _bloc;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _weightTextController = TextEditingController();
+  final TextEditingController _heightTextController = TextEditingController();
+
+  final FocusNode _heightFocusNode = FocusNode();
 
   @override
   void initState() {
-    _controller = IMCCalculateController();
+    _bloc = IMCCalculateBloc();
+    _bloc.input.add(IMCCalculateLoadEvent());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bloc.input.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(title: const Text("IMC Calculator"), centerTitle: true),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              CustomTextField(
-                controller: _weightTextController,
-                title: 'Weight',
-                hintText: 'Weight (kg)',
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                validatorFunction: Validator.isRequired,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-                ],
-              ),
-              const SizedBox(height: 20),
-              CustomTextField(
-                controller: _heightTextController,
-                title: 'Height',
-                hintText: 'Height (cm)',
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                validatorFunction: Validator.isRequired,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-                ],
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    await _controller.calculateIMC(
-                      weight: double.parse(_weightTextController.text),
-                      height: double.parse(_heightTextController.text),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                CustomTextField(
+                  controller: _weightTextController,
+                  title: 'Weight (kg)',
+                  hintText: 'Weight (kg)',
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  onFieldSubmitted: (_) => _heightFocusNode.requestFocus(),
+                  validatorFunction: Validator.isRequired,
+                  inputFormatters: [
+                    DecimalTextInputFormatter.signal,
+                    DecimalTextInputFormatter(decimalRange: 2),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                CustomTextField(
+                  controller: _heightTextController,
+                  focusNode: _heightFocusNode,
+                  title: 'Height (cm)',
+                  hintText: 'Height (cm)',
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  validatorFunction: Validator.isRequired,
+                  inputFormatters: [
+                    DecimalTextInputFormatter.signal,
+                    DecimalTextInputFormatter(decimalRange: 2),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _calculateIMC();
+                    }
+                  },
+                  child: const Text("Calcular"),
+                ),
+                const SizedBox(height: 17),
+            
+                StreamBuilder(
+                  stream: _bloc.stream,
+                  builder: (context, AsyncSnapshot<IMCCalculateState> snapshotState) {
+                    final List<PersonIMC> iMCsList = snapshotState.data?.iMCsList ?? [];
+        
+                    if (snapshotState.data is IMCCalculateLoadingState) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+        
+                    return Column(
+                      children: [
+                        Text(snapshotState.data is IMCCalculateSuccessState ? 'Classificação: ${(snapshotState.data as IMCCalculateSuccessState).classificacao}' : ''),
+                        Text(_showIMC(state: snapshotState.data ?? IMCCalculateInitialState(iMCsList: []))),
+                        
+                        SizedBox(
+                          height: 200,
+                            child: ListView.builder(
+                              itemCount: iMCsList.length,
+                              itemBuilder: (context, index) {
+                                final PersonIMC personIMC = iMCsList[index];
+                        
+                                return CustomCardIMC(
+                                  imc: personIMC.imc,
+                                  weight: personIMC.weight,
+                                  date: personIMC.date,
+                                  deleteFunction: () => _bloc.input.add(IMCCalculateDeleteEvent(id: iMCsList[index].id!))
+                                );
+                              },
+                            ),
+                          ),
+                      ],
                     );
-                  }
-                },
-                child: const Text("Calcular"),
-              ),
-          
-              
-            ],
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void _calculateIMC() {
+    final double weight = Formatters.stringToDouble(value: _weightTextController.text);
+    final double height = Formatters.stringToDouble(value: _heightTextController.text);
+
+    _bloc.input.add(IMCCalculateAddIMCEvent(height, weight));
+
+    // _weightTextController.clear();
+    // _heightTextController.clear();
+  }
+
+  String _showIMC({required IMCCalculateState state}) {
+    if (state is IMCCalculateSuccessState && state.lastIMCCalculated != null) {
+      return 'IMC: ${Formatters.numberToDecimal(state.lastIMCCalculated!)}';
+    }
+
+    return '';
   }
 }

@@ -20,7 +20,7 @@ PersonIMC _$PersonIMCFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PersonIMC {
-  int get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   double get height => throw _privateConstructorUsedError;
   double get weight => throw _privateConstructorUsedError;
   double get imc => throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ abstract class $PersonIMCCopyWith<$Res> {
   factory $PersonIMCCopyWith(PersonIMC value, $Res Function(PersonIMC) then) =
       _$PersonIMCCopyWithImpl<$Res, PersonIMC>;
   @useResult
-  $Res call({int id, double height, double weight, double imc, String date});
+  $Res call({int? id, double height, double weight, double imc, String date});
 }
 
 /// @nodoc
@@ -53,17 +53,17 @@ class _$PersonIMCCopyWithImpl<$Res, $Val extends PersonIMC>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? height = null,
     Object? weight = null,
     Object? imc = null,
     Object? date = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       height: null == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
@@ -92,7 +92,7 @@ abstract class _$$PersonIMCImplCopyWith<$Res>
       __$$PersonIMCImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, double height, double weight, double imc, String date});
+  $Res call({int? id, double height, double weight, double imc, String date});
 }
 
 /// @nodoc
@@ -106,17 +106,17 @@ class __$$PersonIMCImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? height = null,
     Object? weight = null,
     Object? imc = null,
     Object? date = null,
   }) {
     return _then(_$PersonIMCImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       height: null == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
@@ -141,7 +141,7 @@ class __$$PersonIMCImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PersonIMCImpl implements _PersonIMC {
   const _$PersonIMCImpl(
-      {required this.id,
+      {this.id,
       required this.height,
       required this.weight,
       required this.imc,
@@ -151,7 +151,7 @@ class _$PersonIMCImpl implements _PersonIMC {
       _$$PersonIMCImplFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
   final double height;
   @override
@@ -198,7 +198,7 @@ class _$PersonIMCImpl implements _PersonIMC {
 
 abstract class _PersonIMC implements PersonIMC {
   const factory _PersonIMC(
-      {required final int id,
+      {final int? id,
       required final double height,
       required final double weight,
       required final double imc,
@@ -208,7 +208,7 @@ abstract class _PersonIMC implements PersonIMC {
       _$PersonIMCImpl.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override
   double get height;
   @override

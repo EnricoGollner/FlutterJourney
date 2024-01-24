@@ -9,7 +9,7 @@ part 'person_imc.g.dart';
 @freezed
 class PersonIMC with _$PersonIMC {
   const factory PersonIMC({
-    required int id,
+    int? id,
     required double height,
     required double weight,
     required double imc,
