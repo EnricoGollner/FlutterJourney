@@ -8,17 +8,17 @@ class PeopleController extends ValueNotifier<List<Person>> {
   PeopleController() : super([]);
 
   Future<void> getPeople() async {
-    final PeopleRepository _repository = await PeopleRepository.load();
-    value = await _repository.getList();
+    final PeopleRepository repository = await PeopleRepository.load();
+    value = await repository.getList();
   }
 
   Future<void> addPerson(String personName) async {
-    final PeopleRepository _repository = await PeopleRepository.load();
+    final PeopleRepository repository = await PeopleRepository.load();
 
     final Person person = Person(name: personName, age: Random().nextInt(40));
 
     value.add(person);
-    await _repository.save(value);
+    await repository.save(value);
     notifyListeners();
   }
 }

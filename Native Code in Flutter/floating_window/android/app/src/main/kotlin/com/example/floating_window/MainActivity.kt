@@ -27,7 +27,7 @@ class MainActivity: FlutterActivity() {
                         FloatWindow.with(applicationContext).setView(imageView)
                             .setWidth(Screen.width, 0.14f)
                             .setHeight(Screen.width, 0.14f)
-                            .setX(Screen.width, 0.8f)
+                            .setX(Screen.width, 0.5f)
                             .setY(Screen.height, 0.5f)
                             .setDesktopShow(true)
                             .build()

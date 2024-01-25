@@ -38,7 +38,9 @@ class _PeoplePageState extends State<PeoplePage> {
           children: [
             Row(
               children: [
-                Expanded(child: TextField(controller: _nameController)),
+                Expanded(child: TextField(
+                  onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+                  controller: _nameController)),
                 ElevatedButton(
                   onPressed: () =>
                       _peopleController.addPerson(_nameController.text),

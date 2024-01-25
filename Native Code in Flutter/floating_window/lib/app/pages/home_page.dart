@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     platform.setMethodCallHandler((call) async {
       if (call.method == 'increment') {
-        increment();
+        _increment();
       }
     });
 
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void increment() {
+  void _increment() {
     setState(() => counter++);
   }
 }

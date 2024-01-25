@@ -9,7 +9,7 @@ class BatteryChannel {
   }
 
   //EventChannel
-  final EventChannel _eventChannel = EventChannel('batteryEvent');
+  final EventChannel _eventChannel = const EventChannel('batteryEvent');
 
   Stream get  stream => _eventChannel.receiveBroadcastStream().cast();
 }
