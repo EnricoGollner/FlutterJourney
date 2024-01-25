@@ -22,22 +22,15 @@ class IMCCalculateBloc {
   Future<void> _mapEventToState(IMCCalculateEvent event) async {
     List<PersonIMC> iMCsList = List<PersonIMC>.empty();
     _output.add(IMCCalculateLoadingState(iMCsList: []));
-    String classificacao = '';
 
     if (event is IMCCalculateLoadEvent) {
-      await _repository.getIMCs().then((iMCsList) {
-        iMCsList.addAll(iMCsList);
-      }).catchError((error) {
-        _output.add(IMCCalculateFailureState(message: error.toString(), iMCsList: iMCsList));
-      });
+      iMCsList = await _repository.getIMCs();
 
     } else if (event is IMCCalculateAddIMCEvent) {
       final String date = DateFormat('dd/MM/yyyy').format(DateTime.now());
       final double imc = calculateIMC(weight: event.weight, height: event.height);
 
-      await _repository.saveIMC(personIMC: PersonIMC(height: event.height, weight: event.weight, imc: imc, date: date));
-
-      classificacao = switch (imc) {
+      final String classification = switch (imc) {
         < 16 => 'Magreza grave',
         < 17 => 'Magreza moderada',
         < 18.5 => 'Magreza leve',
@@ -48,13 +41,15 @@ class IMCCalculateBloc {
         >= 40 => 'Obesidade grau III (mórbida)',
         _ => 'IMC não encontrado',
       };
+      
+      iMCsList = await _repository.saveIMC(personIMC: PersonIMC(height: event.height, weight: event.weight, imc: imc, classification: classification, date: date));
 
-      return _output.add(IMCCalculateSuccessState(iMCsList: iMCsList, classificacao: classificacao, lastIMCCalculated: imc));
+      return _output.add(IMCCalculateSuccessState(iMCsList: iMCsList, classification: classification, lastIMCCalculated: imc));
     } else if (event is IMCCalculateDeleteEvent) {
-      await _repository.deleteIMC(id: event.id);
+      iMCsList = await _repository.deleteIMC(id: event.id);
     }
 
-    _output.add(IMCCalculateSuccessState(iMCsList: iMCsList, classificacao: classificacao));
+    _output.add(IMCCalculateSuccessState(iMCsList: iMCsList));
   }
 
   double calculateIMC({required double weight, required double height}) {

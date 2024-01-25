@@ -12,6 +12,7 @@ class PersonIMC with _$PersonIMC {
     int? id,
     required double height,
     required double weight,
+    required String classification,
     required double imc,
     required String date,
   }) = _PersonIMC;

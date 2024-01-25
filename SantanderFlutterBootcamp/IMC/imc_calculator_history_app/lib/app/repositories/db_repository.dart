@@ -16,8 +16,8 @@ class SQLiteDBRepository {
   Future<Database> _initDatabase() async {
     Database db = await openDatabase(
       join(await getDatabasesPath(), DBUtils.dbName),
-      version: 1, // Based in the scripts created
-      onCreate: (db, version) async {  // SQL executed when creating the database
+      version: 1,
+      onCreate: (db, version) async {
         await db.execute(DBUtils.createTableQuery);
       },
     );

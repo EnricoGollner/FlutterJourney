@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:imc_calculator_history_app/core/theme/fonts.dart';
 
 class CustomTextField extends StatelessWidget {
   final String title;
@@ -34,7 +35,7 @@ class CustomTextField extends StatelessWidget {
           margin: const EdgeInsets.only(left: 5),
           child: Text(
             title,
-            style: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.w300),
+            style: labelTextFieldStyle,
           ),
         ),
         const SizedBox(height: 10),

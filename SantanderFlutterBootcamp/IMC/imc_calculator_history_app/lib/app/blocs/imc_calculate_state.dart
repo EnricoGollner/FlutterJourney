@@ -15,10 +15,10 @@ class IMCCalculateLoadingState extends IMCCalculateState {
 }
 
 class IMCCalculateSuccessState extends IMCCalculateState {
-  final String classificacao;
+  final String? classification;
   final double? lastIMCCalculated;
 
-  IMCCalculateSuccessState({required super.iMCsList, required this.classificacao, this.lastIMCCalculated});
+  IMCCalculateSuccessState({required super.iMCsList, this.classification, this.lastIMCCalculated});
 }
 
 class IMCCalculateFailureState extends IMCCalculateState {

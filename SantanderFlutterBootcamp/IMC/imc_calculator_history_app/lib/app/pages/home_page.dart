@@ -5,6 +5,7 @@ import 'package:imc_calculator_history_app/app/blocs/imc_calculate_state.dart';
 import 'package:imc_calculator_history_app/app/models/person_imc.dart';
 import 'package:imc_calculator_history_app/app/pages/widgets/custom_card_imc.dart';
 import 'package:imc_calculator_history_app/app/pages/widgets/custom_text_field.dart';
+import 'package:imc_calculator_history_app/core/theme/fonts.dart';
 import 'package:imc_calculator_history_app/core/util/decimal_text_input_formatter.dart';
 import 'package:imc_calculator_history_app/core/util/formatters.dart';
 import 'package:imc_calculator_history_app/core/util/validator_util.dart';
@@ -97,8 +98,8 @@ class _HomePageState extends State<HomePage> {
         
                     return Column(
                       children: [
-                        Text(snapshotState.data is IMCCalculateSuccessState ? 'Classificação: ${(snapshotState.data as IMCCalculateSuccessState).classificacao}' : ''),
-                        Text(_showIMC(state: snapshotState.data ?? IMCCalculateInitialState())),
+                        Text(_showClassification(state: snapshotState.data ?? IMCCalculateInitialState()), style: imcShowStyle,),
+                        Text(_showIMC(state: snapshotState.data ?? IMCCalculateInitialState()), style: imcShowStyle),
                         
                         SizedBox(
                           height: 200,
@@ -110,6 +111,7 @@ class _HomePageState extends State<HomePage> {
                                 return CustomCardIMC(
                                   imc: personIMC.imc,
                                   weight: personIMC.weight,
+                                  classification: personIMC.classification,
                                   date: personIMC.date,
                                   deleteFunction: () => _bloc.input.add(IMCCalculateDeleteEvent(id: iMCsList[index].id!))
                                 );
@@ -136,6 +138,12 @@ class _HomePageState extends State<HomePage> {
 
     _weightTextController.clear();
     _heightTextController.clear();
+  }
+
+  String _showClassification({required IMCCalculateState state}) {
+    return state is IMCCalculateSuccessState && state.classification != null
+      ? 'Classificação: ${state.classification}'
+      : '';
   }
 
   String _showIMC({required IMCCalculateState state}) {

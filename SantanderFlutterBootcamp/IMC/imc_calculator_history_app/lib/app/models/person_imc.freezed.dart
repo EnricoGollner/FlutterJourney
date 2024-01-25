@@ -23,6 +23,7 @@ mixin _$PersonIMC {
   int? get id => throw _privateConstructorUsedError;
   double get height => throw _privateConstructorUsedError;
   double get weight => throw _privateConstructorUsedError;
+  String get classification => throw _privateConstructorUsedError;
   double get imc => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
 
@@ -37,7 +38,13 @@ abstract class $PersonIMCCopyWith<$Res> {
   factory $PersonIMCCopyWith(PersonIMC value, $Res Function(PersonIMC) then) =
       _$PersonIMCCopyWithImpl<$Res, PersonIMC>;
   @useResult
-  $Res call({int? id, double height, double weight, double imc, String date});
+  $Res call(
+      {int? id,
+      double height,
+      double weight,
+      String classification,
+      double imc,
+      String date});
 }
 
 /// @nodoc
@@ -56,6 +63,7 @@ class _$PersonIMCCopyWithImpl<$Res, $Val extends PersonIMC>
     Object? id = freezed,
     Object? height = null,
     Object? weight = null,
+    Object? classification = null,
     Object? imc = null,
     Object? date = null,
   }) {
@@ -72,6 +80,10 @@ class _$PersonIMCCopyWithImpl<$Res, $Val extends PersonIMC>
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
               as double,
+      classification: null == classification
+          ? _value.classification
+          : classification // ignore: cast_nullable_to_non_nullable
+              as String,
       imc: null == imc
           ? _value.imc
           : imc // ignore: cast_nullable_to_non_nullable
@@ -92,7 +104,13 @@ abstract class _$$PersonIMCImplCopyWith<$Res>
       __$$PersonIMCImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? id, double height, double weight, double imc, String date});
+  $Res call(
+      {int? id,
+      double height,
+      double weight,
+      String classification,
+      double imc,
+      String date});
 }
 
 /// @nodoc
@@ -109,6 +127,7 @@ class __$$PersonIMCImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? height = null,
     Object? weight = null,
+    Object? classification = null,
     Object? imc = null,
     Object? date = null,
   }) {
@@ -125,6 +144,10 @@ class __$$PersonIMCImplCopyWithImpl<$Res>
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
               as double,
+      classification: null == classification
+          ? _value.classification
+          : classification // ignore: cast_nullable_to_non_nullable
+              as String,
       imc: null == imc
           ? _value.imc
           : imc // ignore: cast_nullable_to_non_nullable
@@ -144,6 +167,7 @@ class _$PersonIMCImpl implements _PersonIMC {
       {this.id,
       required this.height,
       required this.weight,
+      required this.classification,
       required this.imc,
       required this.date});
 
@@ -157,13 +181,15 @@ class _$PersonIMCImpl implements _PersonIMC {
   @override
   final double weight;
   @override
+  final String classification;
+  @override
   final double imc;
   @override
   final String date;
 
   @override
   String toString() {
-    return 'PersonIMC(id: $id, height: $height, weight: $weight, imc: $imc, date: $date)';
+    return 'PersonIMC(id: $id, height: $height, weight: $weight, classification: $classification, imc: $imc, date: $date)';
   }
 
   @override
@@ -174,13 +200,16 @@ class _$PersonIMCImpl implements _PersonIMC {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.height, height) || other.height == height) &&
             (identical(other.weight, weight) || other.weight == weight) &&
+            (identical(other.classification, classification) ||
+                other.classification == classification) &&
             (identical(other.imc, imc) || other.imc == imc) &&
             (identical(other.date, date) || other.date == date));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, height, weight, imc, date);
+  int get hashCode =>
+      Object.hash(runtimeType, id, height, weight, classification, imc, date);
 
   @JsonKey(ignore: true)
   @override
@@ -201,6 +230,7 @@ abstract class _PersonIMC implements PersonIMC {
       {final int? id,
       required final double height,
       required final double weight,
+      required final String classification,
       required final double imc,
       required final String date}) = _$PersonIMCImpl;
 
@@ -213,6 +243,8 @@ abstract class _PersonIMC implements PersonIMC {
   double get height;
   @override
   double get weight;
+  @override
+  String get classification;
   @override
   double get imc;
   @override
