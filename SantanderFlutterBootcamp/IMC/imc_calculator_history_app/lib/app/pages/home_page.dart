@@ -101,23 +101,22 @@ class _HomePageState extends State<HomePage> {
                         Text(_showClassification(state: snapshotState.data ?? IMCCalculateInitialState()), style: imcShowStyle,),
                         Text(_showIMC(state: snapshotState.data ?? IMCCalculateInitialState()), style: imcShowStyle),
                         
-                        SizedBox(
-                          height: 200,
-                            child: ListView.builder(
-                              itemCount: iMCsList.length,
-                              itemBuilder: (context, index) {
-                                final PersonIMC personIMC = iMCsList[index];
-                        
-                                return CustomCardIMC(
-                                  imc: personIMC.imc,
-                                  weight: personIMC.weight,
-                                  classification: personIMC.classification,
-                                  date: personIMC.date,
-                                  deleteFunction: () => _bloc.input.add(IMCCalculateDeleteEvent(id: iMCsList[index].id!))
-                                );
-                              },
-                            ),
-                          ),
+                        ListView.separated(
+                          shrinkWrap: true,
+                          separatorBuilder: (_, __) => const Divider(),
+                          itemCount: iMCsList.length,
+                          itemBuilder: (context, index) {
+                            final PersonIMC personIMC = iMCsList[index];
+
+                            return CustomCardIMC(
+                              imc: personIMC.imc,
+                              weight: personIMC.weight,
+                              classification: personIMC.classification,
+                              date: personIMC.date,
+                              deleteFunction: () => _bloc.input.add(IMCCalculateDeleteEvent(id: iMCsList[index].id!))
+                            );
+                          },
+                        ),
                       ],
                     );
                   },

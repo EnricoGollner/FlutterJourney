@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imc_calculator_history_app/core/theme/fonts.dart';
 import 'package:imc_calculator_history_app/core/util/formatters.dart';
 
 class CustomCardIMC extends StatelessWidget {
@@ -16,8 +17,39 @@ class CustomCardIMC extends StatelessWidget {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('IMC: ${Formatters.numberToDecimal(imc)} - ($classification)'),
-          Text('Weight: ${Formatters.numberToDecimal(weight)}'),
+          RichText(
+            text: TextSpan(
+              text: 'Classification: ',
+              style: labelStyle,
+              children: [
+                TextSpan(
+                    text: classification,
+                    style: const TextStyle(fontWeight: FontWeight.normal)),
+              ],
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              text: 'IMC: ',
+              style: labelStyle,
+              children: [
+                TextSpan(
+                    text: Formatters.numberToDecimal(imc),
+                    style: const TextStyle(fontWeight: FontWeight.normal)),
+              ],
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              text: 'Weight: ',
+              style: labelStyle,
+              children: [
+                TextSpan(
+                    text: Formatters.numberToDecimal(weight),
+                    style: const TextStyle(fontWeight: FontWeight.normal)),
+              ],
+            ),
+          ),
         ],
       ),
       subtitle: Text(date),

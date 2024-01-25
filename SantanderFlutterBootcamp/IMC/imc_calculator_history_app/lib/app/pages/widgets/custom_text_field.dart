@@ -35,7 +35,7 @@ class CustomTextField extends StatelessWidget {
           margin: const EdgeInsets.only(left: 5),
           child: Text(
             title,
-            style: labelTextFieldStyle,
+            style: labelStyle,
           ),
         ),
         const SizedBox(height: 10),
