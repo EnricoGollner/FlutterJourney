@@ -4,8 +4,8 @@ import 'package:imc_calculator_history_app/core/util/db_util.dart';
 import 'package:sqflite/sqflite.dart';
 
 abstract class IPersonIMCRepository {
-  Future<List<PersonIMC>> saveIMC({required PersonIMC personIMC});
   Future<List<PersonIMC>> getIMCs();
+  Future<List<PersonIMC>> saveIMC({required PersonIMC personIMC});
   // Future<List<PersonIMC>> updateIMC({required PersonIMC personIMC});
   Future<List<PersonIMC>> deleteIMC({required int id});
 }
@@ -15,20 +15,20 @@ class PersonIMCRepository implements IPersonIMCRepository{
   final List<PersonIMC> iMCsList = [];
 
   @override
-  Future<List<PersonIMC>> saveIMC({required PersonIMC personIMC}) async {
-    final Database db = await _dbRepository.getDatabase();
-    await db.rawInsert('INSERT INTO ${DBUtils.imcTable} (height, weight, imc, classification, date) VALUES (?, ?, ?, ?, ?)', [personIMC.height, personIMC.weight, personIMC.imc, personIMC.classification, personIMC.date]);
-    iMCsList.add(personIMC);
-
-    return iMCsList;
-  }
-
-  @override
   Future<List<PersonIMC>> getIMCs() async {
     final Database db = await _dbRepository.getDatabase();
     await db.rawQuery('SELECT * FROM ${DBUtils.imcTable}').then((json) => {
       iMCsList.addAll(json.map((e) => PersonIMC.fromJson(e)).toList())
     });
+
+    return iMCsList;
+  }
+
+  @override
+  Future<List<PersonIMC>> saveIMC({required PersonIMC personIMC}) async {
+    final Database db = await _dbRepository.getDatabase();
+    await db.rawInsert('INSERT INTO ${DBUtils.imcTable} (height, weight, imc, classification, date) VALUES (?, ?, ?, ?, ?)', [personIMC.height, personIMC.weight, personIMC.imc, personIMC.classification, personIMC.date]);
+    iMCsList.add(personIMC);
 
     return iMCsList;
   }

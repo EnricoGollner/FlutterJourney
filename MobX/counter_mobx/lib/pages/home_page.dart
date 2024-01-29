@@ -23,9 +23,7 @@ class MyHomePage extends StatelessWidget {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Observer(
-              builder: (context) => Text('${store.counter}'),
-            )
+            Observer(builder: (context) => Text(store.counter.toString()),)
           ],
         ),
       ),
