@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "183986218136",
+    "project_id": "virtualstore-daf33",
+    "storage_bucket": "virtualstore-daf33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183986218136:android:58892927caabec55149ced",
+        "android_client_info": {
+          "package_name": "com.example.virtual_store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6V82PEn1qgcjEUp187pzgZBg-M81c-mI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
