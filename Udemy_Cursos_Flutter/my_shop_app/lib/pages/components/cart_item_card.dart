@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/core/utils/formatters.dart';
-import 'package:shop/models/cart.dart';
-import 'package:shop/models/cart_item.dart';
+import 'package:shop/data/models/cart.dart';
+import 'package:shop/data/models/cart_item.dart';
 
 class CartItemCard extends StatelessWidget {
   final CartItem cartItem;
@@ -24,7 +24,29 @@ class CartItemCard extends StatelessWidget {
           size: 40,
         ),
       ),
-      onDismissed: (_) => Provider.of<Cart>(context, listen: false).removeItem(cartItem.productId),
+      onDismissed: (_) => Provider.of<Cart>(context, listen: false)
+          .removeItem(cartItem.productId),
+      confirmDismiss: (_) {
+        return showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              title: const Text('Confirm'),
+              content: const Text('Are you sure you want to remove this product from your cart?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Confirm'),
+                )
+              ],
+            );
+          },
+        );
+      },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: Padding(
@@ -39,7 +61,8 @@ class CartItemCard extends StatelessWidget {
               ),
             ),
             title: Text(cartItem.name),
-            subtitle: Text('Total: ${Formatters.doubleToCurrency(cartItem.price * cartItem.quantity)}'),
+            subtitle: Text(
+                'Total: ${Formatters.doubleToCurrency(cartItem.price * cartItem.quantity)}'),
             trailing: Text('${cartItem.quantity}x'),
           ),
         ),

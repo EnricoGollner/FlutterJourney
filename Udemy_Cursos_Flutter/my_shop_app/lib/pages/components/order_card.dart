@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop/core/utils/formatters.dart';
-import 'package:shop/models/order.dart';
+import 'package:shop/data/models/order.dart';
 
 class OrderCard extends StatefulWidget {
   final Order order;

@@ -7,6 +7,9 @@ class Styles {
         colorScheme: const ColorScheme.light(
           primary: colorPrimary,
           secondary: colorSecondary,
+          error: colorError,
+          background: colorBackground,
+          onBackground: colorOnBackground,
         ),
         appBarTheme: const AppBarTheme(
           centerTitle: true,

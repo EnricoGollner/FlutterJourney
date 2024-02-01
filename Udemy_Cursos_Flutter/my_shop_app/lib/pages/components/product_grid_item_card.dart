@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/core/utils/app_routes.dart';
-import 'package:shop/models/cart.dart';
-import 'package:shop/models/product.dart';
+import 'package:shop/data/models/cart.dart';
+import 'package:shop/data/models/product.dart';
+import 'package:shop/pages/components/custom_snack_bar.dart';
 
-class ProductItemCard extends StatelessWidget {
-  const ProductItemCard({super.key});
+class ProductGridItemCard extends StatelessWidget {
+  const ProductGridItemCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,13 @@ class ProductItemCard extends StatelessWidget {
                 product.isFavorite ? Icons.favorite : Icons.favorite_border,
                 color: Theme.of(context).colorScheme.secondary,
               ),
-              onPressed: () => product.toggleFavorite(),
+              onPressed: () {
+                product.toggleFavorite();
+                showSnackBar(
+                  context,
+                  const BoxSnackBar.success(message:'Product added successfully to the favorite products list!'),
+                );
+              },
             ),
           ),
           trailing: IconButton(
@@ -31,7 +38,17 @@ class ProductItemCard extends StatelessWidget {
               Icons.shopping_cart,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            onPressed: () => cartProvider.addItem(productProvider),
+            onPressed: () {
+              cartProvider.addItem(productProvider);
+              showSnackBar(
+                context,
+                BoxSnackBar.success(
+                  message: 'Product added successfully to the cart',
+                  actionLabel: 'Undo',
+                  action: () => cartProvider.removeSingleItem(productProvider.id),
+                ),
+              );
+            },
           ),
           title: Text(productProvider.title),
         ),

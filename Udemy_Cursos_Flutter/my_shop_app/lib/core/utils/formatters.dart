@@ -17,6 +17,22 @@ class Formatters {
     }
   }
 
+  ///Format the string to be correctly converted to double, treating the internationalization.
+  static double currencyToDouble(String currencyText) {
+    String symbol = 'R\$';
+    currencyText = currencyText.replaceFirst(symbol, '');
+
+    if (Platform.localeName == 'pt_BR') {
+      currencyText = currencyText.replaceAll('.', '');
+      currencyText = currencyText.replaceAll(',', '.');
+    } else if (Platform.localeName == 'en_US') {
+      currencyText = currencyText.replaceAll(',', '');
+    }
+    
+    return double.parse(currencyText);
+  }
+
+
   static String dateTimeToString({required DateTime date}) {
     DateFormat('dd/MM/yyyy hh:mm').format(date);
 
