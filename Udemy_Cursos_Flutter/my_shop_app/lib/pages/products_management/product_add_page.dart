@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/core/utils/decimal_text_input_formatter.dart';
@@ -37,6 +35,25 @@ class _ProductAddPageState extends State<ProductAddPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    if (_formData.isEmpty) {
+      final argument = ModalRoute.of(context)?.settings.arguments;
+
+      if (argument != null) {
+        final product = argument as Product;
+        _formData['id'] = product.id;
+        _formData['name'] = product.title;
+        _formData['price'] = product.price;
+        _formData['description'] = product.description;
+        _formData['urlImage'] = product.urlImage;
+        _urlImageController.text = _formData['urlImage'];
+      }
+    }
+
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     _urlImageController.dispose();
 
@@ -65,6 +82,7 @@ class _ProductAddPageState extends State<ProductAddPage> {
             child: Column(
               children: [
                 CustomTextField(
+                  initialValue: _formData['name'],
                   textInputAction: TextInputAction.next,
                   autofocus: true,
                   label: 'Name',
@@ -74,6 +92,7 @@ class _ProductAddPageState extends State<ProductAddPage> {
                 ),
                 const SizedBox(height: 10),
                 CustomTextField(
+                  initialValue: _formData['price'] == null ? '' : _formData['price'].toString(),
                   focusNode: _priceFocus,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_descriptionFocus),
@@ -88,6 +107,7 @@ class _ProductAddPageState extends State<ProductAddPage> {
                 ),
                 const SizedBox(height: 10),
                 CustomTextField(
+                  initialValue: _formData['description'],
                   focusNode: _descriptionFocus,
                   onSaved: (description) => _formData['description'] = description?.trim() ?? '',
                   label: 'Description',
@@ -139,7 +159,7 @@ class _ProductAddPageState extends State<ProductAddPage> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
-      _productListProvider.addProductFromData(_formData);
+      _productListProvider.saveProduct(_formData);
       Navigator.pop(context);
     }
   }

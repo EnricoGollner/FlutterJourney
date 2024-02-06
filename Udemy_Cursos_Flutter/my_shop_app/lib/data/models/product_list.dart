@@ -10,21 +10,38 @@ class ProductList with ChangeNotifier {
   List<Product> get items => [..._items];
   List<Product> get favoriteItems => _items.where((item) => item.isFavorite).toList();
 
-  void addProductFromData(Map<String, dynamic> data) {
-    final Product newProduct = Product(
-      id: Random().nextDouble().toString(),
+  void saveProduct(Map<String, dynamic> data) {
+    final Product product = Product(
+      id: data['id'] ?? Random().nextDouble().toString(),
       title: data['name'],
       description: data['description'],
       price: data['price'],
       urlImage: data['urlImage'],
     );
-    
-    _items.add(newProduct);
-    notifyListeners();
+
+    if (data['id'] != null) {
+      updateProduct(product);
+    } else {
+      addProduct(product);
+    }
   }
 
   void addProduct(Product newProduct) {
     _items.add(newProduct);
+    notifyListeners();
+  }
+  
+  void updateProduct(Product updatedProduct) {
+    int index = _items.indexWhere((product) => product.id == updatedProduct.id);
+
+    if (index >= 0) {
+      _items[index] = updatedProduct;
+      notifyListeners();
+    }
+  }
+
+  void deleteProduct({required String id}) {
+    _items.removeWhere((product) => product.id == id);
     notifyListeners();
   }
 }

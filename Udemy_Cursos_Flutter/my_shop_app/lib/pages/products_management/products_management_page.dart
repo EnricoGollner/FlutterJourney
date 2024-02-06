@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop/core/utils/app_routes.dart';
 import 'package:shop/data/models/product_list.dart';
 import 'package:shop/pages/components/app_drawer.dart';
@@ -9,13 +10,15 @@ class ProductsManagementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProductList productListProvider = ProductList();
+    final ProductList productListProvider = Provider.of<ProductList>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Manage Products'),
         actions: [
           IconButton(
-            onPressed: () => Navigator.pushNamed(context, AppRoutes.PRODUCTS_ADD),
+            onPressed: () =>
+                Navigator.pushNamed(context, AppRoutes.PRODUCTS_ADD),
             icon: const Icon(Icons.add),
           ),
         ],
@@ -24,11 +27,39 @@ class ProductsManagementPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.separated(
-          separatorBuilder: (context, index) => const Divider(color: Colors.grey, thickness: 1),
+          separatorBuilder: (context, index) =>
+              const Divider(color: Colors.grey, thickness: 1),
           itemCount: productListProvider.items.length,
           itemBuilder: (context, index) {
             final product = productListProvider.items[index];
-            return ProductItemCard(imageUrl: product.urlImage, title: product.title);
+
+            return ProductItemCard(
+              imageUrl: product.urlImage,
+              title: product.title,
+              onEdit: () => Navigator.pushNamed(context, AppRoutes.PRODUCTS_ADD, arguments: product),
+              onDelete: () async => await showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      title: const Text('Delete Product'),
+                      content: Text("Do you want to delete ${product.title}'?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text('Yes'),
+                        ),
+                      ],
+                    );
+                  }).then((value) {
+                    if (value ?? false) {
+                      productListProvider.deleteProduct(id: product.id);
+                    }
+                  }),
+            );
           },
         ),
       ),

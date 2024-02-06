@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
+  final String? initialValue;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final bool autofocus;
@@ -30,13 +31,14 @@ class CustomTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.focusNode,
     this.textInputAction,
-    this.onSaved,
+    this.onSaved, this.initialValue,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       onTapOutside: (_) => FocusManager.instance.primaryFocus!.unfocus(),
+      initialValue: initialValue,
       decoration: InputDecoration(
         label: Text(label ?? ''),
         prefix: prefix != null ? Text(prefix!) : null,
