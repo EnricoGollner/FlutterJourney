@@ -59,7 +59,7 @@ class ProductGridItemCard extends StatelessWidget {
             arguments: productProvider,
           ),
           child: Image.network(
-            productProvider.imageUrl,
+            productProvider.urlImage,
             fit: BoxFit.cover,
           ),
         ),

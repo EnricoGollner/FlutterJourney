@@ -24,10 +24,9 @@ class CartItemCard extends StatelessWidget {
           size: 40,
         ),
       ),
-      onDismissed: (_) => Provider.of<Cart>(context, listen: false)
-          .removeItem(cartItem.productId),
-      confirmDismiss: (_) {
-        return showDialog(
+      onDismissed: (_) => Provider.of<Cart>(context, listen: false).removeItem(cartItem.productId),
+      confirmDismiss: (_) async {
+        return await showDialog(
           context: context,
           builder: (_) {
             return AlertDialog(

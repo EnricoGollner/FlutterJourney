@@ -6,5 +6,5 @@ class AppRoutes {
   static const CART = '/cart';
   static const ORDERS = '/orders';
   static const PRODUCTS_MANAGEMENT = '/products-management';
-  static const PRODUCTS_ADD_FORM = '/products-add-form';
+  static const PRODUCTS_ADD = '/products-add-form';
 }

@@ -8,8 +8,8 @@ import 'package:shop/data/models/product_list.dart';
 import 'package:shop/pages/cart_page.dart';
 import 'package:shop/pages/orders_page.dart';
 import 'package:shop/pages/product_detail_page.dart';
-import 'package:shop/pages/product_add_page.dart';
-import 'package:shop/pages/products_management_page.dart';
+import 'package:shop/pages/products_management/product_add_page.dart';
+import 'package:shop/pages/products_management/products_management_page.dart';
 import 'package:shop/pages/products_overview_page.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.CART: (_) => const CartPage(),
           AppRoutes.ORDERS: (_) => const OrdersPage(),
           AppRoutes.PRODUCTS_MANAGEMENT: (_) => const ProductsManagementPage(),
-          AppRoutes.PRODUCTS_ADD_FORM: (_) => const ProductAddPage(),
+          AppRoutes.PRODUCTS_ADD: (_) => const ProductAddPage(),
         },
       ),
     );
