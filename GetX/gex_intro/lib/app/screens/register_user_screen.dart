@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gex_intro/app/controllers/user_controller.dart';
+import 'package:gex_intro/app/screens/data_screen.dart';
 
 class RegisterUserScreen extends StatelessWidget {
   RegisterUserScreen({super.key});
 
-  UserController userController = UserController();
+  final UserController userController = Get.find<UserController>();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
@@ -54,6 +55,17 @@ class RegisterUserScreen extends StatelessWidget {
                   child: const Text('Save'),
                 ),
               ],
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                // final String result = await Get.to(() => const DataScreen());
+                final String result = await Get.toNamed('/dataScreen');
+                debugPrint(result);
+
+                // Get.to(const DataScreen());
+              },
+              child: const Text('Data Screen'),
             ),
           ],
         ),

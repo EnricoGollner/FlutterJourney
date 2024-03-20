@@ -5,9 +5,9 @@ import 'package:gex_intro/app/model/user_model.dart';
 class UserController extends GetxController {
   Rx<UserModel> user = UserModel().obs;
 
-  void setUserName(String username) {
+  void setUserName(String name) {
     user.update((userObject) {
-      userObject?.name = username;
+      userObject?.name = name;
     });
   }
 
