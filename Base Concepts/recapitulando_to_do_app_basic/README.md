@@ -1,3 +1,0 @@
-# recapitulando_to_do_app_basic
-
-A new Flutter project.

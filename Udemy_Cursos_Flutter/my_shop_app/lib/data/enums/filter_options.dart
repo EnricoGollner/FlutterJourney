@@ -1,4 +1,0 @@
-enum FilterOptions {
-  favorite,
-  all
-}
