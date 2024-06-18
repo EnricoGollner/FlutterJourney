@@ -17,6 +17,23 @@ mixin _$TaskListStore on _TaskListStore, Store {
               name: '_TaskListStore.tasksList'))
           .value;
 
+  late final _$_showOnlyNotConcludedAtom =
+      Atom(name: '_TaskListStore._showOnlyNotConcluded', context: context);
+
+  @override
+  bool get _showOnlyNotConcluded {
+    _$_showOnlyNotConcludedAtom.reportRead();
+    return super._showOnlyNotConcluded;
+  }
+
+  @override
+  set _showOnlyNotConcluded(bool value) {
+    _$_showOnlyNotConcludedAtom.reportWrite(value, super._showOnlyNotConcluded,
+        () {
+      super._showOnlyNotConcluded = value;
+    });
+  }
+
   late final _$_TaskListStoreActionController =
       ActionController(name: '_TaskListStore', context: context);
 

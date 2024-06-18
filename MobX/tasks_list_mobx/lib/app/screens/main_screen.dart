@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:tasks_list_mobx/app/models/task_list_store.dart';
 import 'package:tasks_list_mobx/app/models/task_store.dart';
+import 'package:tasks_list_mobx/main.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({super.key});
 
   final TextEditingController _descriptionTextController = TextEditingController();
-  final TaskListStore _tasksListStore = TaskListStore();
+  final TaskListStore _tasksListStore = getIt.get<TaskListStore>();
 
   @override
   Widget build(BuildContext context) {

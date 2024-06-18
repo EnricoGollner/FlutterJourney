@@ -6,12 +6,14 @@ part 'task_list_store.g.dart';
 class TaskListStore = _TaskListStore with _$TaskListStore;
 
 abstract class _TaskListStore with Store {
-  final Observable<bool> _showOnlyNotConcluded = Observable<bool>(false);
-  bool get showOnlyNotConcluded => _showOnlyNotConcluded.value;
+  @observable
+  bool _showOnlyNotConcluded = false;
+
+  bool get showOnlyNotConcluded => _showOnlyNotConcluded;
 
   @action
   void updateFilter(bool showOnlyNotConcluded) {
-    _showOnlyNotConcluded.value = showOnlyNotConcluded;
+    _showOnlyNotConcluded = showOnlyNotConcluded;
   }
 
   final ObservableList<TaskStore> _tasksList = ObservableList<TaskStore>().asObservable();
