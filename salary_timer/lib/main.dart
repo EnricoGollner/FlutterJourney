@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:salary_timer/app/core/theme/styles.dart';
-import 'package:salary_timer/app/screens/main_page.dart';
+import 'package:salary_timer/app/screens/main_screen.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -24,7 +24,7 @@ class MainApp extends StatelessWidget {
       title: 'Salary Timer',
       theme: Styles.material3Theme,
       debugShowCheckedModeBanner: false,
-      home: const MainPage()
+      home: const MainScreen()
     );
   }
 }

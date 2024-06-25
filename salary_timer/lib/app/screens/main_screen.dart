@@ -5,14 +5,14 @@ import 'package:salary_timer/app/core/theme/colors.dart';
 import 'package:salary_timer/app/core/theme/fonts.dart';
 import 'package:salary_timer/app/screens/widgets/custom_salary_day.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainScreenState extends State<MainScreen> {
   final MainController _controller = MainController();
   DateTime nextSalaryDate = DateTime.now();
 
@@ -41,7 +41,6 @@ class _MainPageState extends State<MainPage> {
               alignment: Alignment.center,
               height: 210,
               width: 210,
-              // padding: const EdgeInsets.all(70),
               decoration: BoxDecoration(
                 border: Border.all(color: contentColor),
                 shape: BoxShape.circle
