@@ -20,7 +20,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _getHolidays();
-      nextSalaryDate = _controller.getNextSalaryDate(nextSalaryDate.year, 5);
+      nextSalaryDate = _controller.getNextSalaryDate(nextSalaryDate.year, nextSalaryDate.month);
     });
 
     super.initState();
@@ -36,14 +36,25 @@ class _MainPageState extends State<MainPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text('Next Salary', style: labelStyle),
-            ValueListenableBuilder(
-              valueListenable: _controller.state,
-              builder: (context, state, _) {
-                return CustomSalaryDay(
-                  state: state,
-                  loadedWidget: _buildLoaded(),
-                );
-              },
+            const SizedBox(height: 20),
+            Container(
+              alignment: Alignment.center,
+              height: 210,
+              width: 210,
+              // padding: const EdgeInsets.all(70),
+              decoration: BoxDecoration(
+                border: Border.all(color: contentColor),
+                shape: BoxShape.circle
+              ),
+              child: ValueListenableBuilder(
+                valueListenable: _controller.state,
+                builder: (context, state, _) {
+                  return CustomSalaryDay(
+                    state: state,
+                    loadedWidget: _buildLoaded(),
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -52,25 +63,18 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildLoaded() {
-    return Container(
-      padding: const EdgeInsets.all(70),
-      margin: const EdgeInsets.only(top: 20),
-      decoration: BoxDecoration(
-        border: Border.all(color: contentColor),
-        shape: BoxShape.circle
-      ),
-      child: Column(
-        children: [
-          Text(
-            DateFormat('dd/MM/yyyy').format(nextSalaryDate),
-            style: contentStyle,
-          ),
-          Text(
-            DateFormat('EEEE', 'pt_BR').format(nextSalaryDate),
-            style: contentStyle,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          DateFormat('dd/MM/yyyy').format(nextSalaryDate),
+          style: contentStyle,
+        ),
+        Text(
+          DateFormat('EEEE', 'pt_BR').format(nextSalaryDate),
+          style: contentStyle,
+        ),
+      ],
     );
   }
   

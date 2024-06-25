@@ -46,7 +46,7 @@ class MainController {
       if (businessDaysCount < 5) date = date.add(const Duration(days: 1));
     }
 
-    // if (DateTime.now().isAfter(date)) return getNextSalaryDate(date.year, date.month + 1);
+    if (DateTime.now().isAfter(date)) return getNextSalaryDate(date.year, date.month + 1);
 
     return date;
   }
