@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app/app/shared/widgets/shared_widgets_ui.dart';
-import 'package:firebase_app/app/tarefa/models/task.dart';
+import 'package:firebase_app/app/task/models/task.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({super.key});
@@ -13,10 +14,23 @@ class TaskScreen extends StatefulWidget {
 class _TaskScreenState extends State<TaskScreen> {
   final TextEditingController _descriptionTextController = TextEditingController();
 
-  final db = FirebaseFirestore.instance;
+  late FirebaseFirestore _db;
+  String userId = ''; 
 
   bool _showOnlyNotConcluded = false;
   void updateFilter(bool showOnlyNotConcluded) => setState(() => _showOnlyNotConcluded = showOnlyNotConcluded);
+
+  @override
+  void initState() {
+    _db = FirebaseFirestore.instance;
+    WidgetsBinding.instance.addPostFrameCallback((_) async => await _loadUser());
+    super.initState();
+  }
+
+  Future<void> _loadUser()  async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() => userId = prefs.getString('userId')!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +59,8 @@ class _TaskScreenState extends State<TaskScreen> {
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: _showOnlyNotConcluded
-                  ? db.collection('tasks').where('isConcluded', isEqualTo: false).snapshots() 
-                  : db.collection('tasks').snapshots(),
+                  ? _db.collection('tasks').where('isConcluded', isEqualTo: false).where('userId', isEqualTo: userId).snapshots() 
+                  : _db.collection('tasks').where('userId', isEqualTo: userId).snapshots(),
                 builder: (context, snapshot) {
                   return !snapshot.hasData
                       ? const Center(child: CircularProgressIndicator())
@@ -56,11 +70,12 @@ class _TaskScreenState extends State<TaskScreen> {
 
                           return Dismissible(
                             key: ValueKey(taskMap.id),
-                            onDismissed: (direction) async => await db.collection('tasks').doc(taskMap.id).delete(),
+                            onDismissed: (direction) async => await _db.collection('tasks').doc(taskMap.id).delete(),
                             child: CheckboxListTile(
                               onChanged: (isConcluded) async {
                                 task.isConcluded = isConcluded ?? false; 
-                                await db.collection('tasks').doc(taskMap.id).update(task.toJson());
+                                task.updatedAt = DateTime.now();
+                                await _db.collection('tasks').doc(taskMap.id).update(task.toJson());
                               },
                               value: task.isConcluded,
                               title: Text(task.description),
@@ -108,8 +123,8 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   Future<void> _addNewTask(BuildContext context) async {
-    final Task task = Task(_descriptionTextController.text, false);
-    await db.collection('tasks').add(task.toJson());
+    final Task task = Task(description: _descriptionTextController.text, isConcluded: false, userId: userId);
+    await _db.collection('tasks').add(task.toJson());
     _descriptionTextController.clear();
     if (context.mounted) Navigator.pop(context);
   }

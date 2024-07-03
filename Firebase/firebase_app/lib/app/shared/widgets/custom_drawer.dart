@@ -1,5 +1,5 @@
 import 'package:firebase_app/app/home/screens/home_screen.dart';
-import 'package:firebase_app/app/tarefa/screens/task_screen.dart';
+import 'package:firebase_app/app/task/screens/task_screen.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -18,7 +18,7 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.task),
             title: const Text('Tasks List'),
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TaskScreen())),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TaskScreen())),
           ),
         ],
       ),

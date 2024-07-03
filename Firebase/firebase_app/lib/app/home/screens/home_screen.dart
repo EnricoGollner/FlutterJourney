@@ -1,3 +1,4 @@
+import 'package:firebase_app/app/chat/screens/chat_screen.dart';
 import 'package:firebase_app/app/shared/widgets/shared_widgets_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -9,37 +10,45 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<int> _items = List<int>.generate(50, (int index) => index);
+  final TextEditingController _nicknameCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color oddItemColor = colorScheme.primary.withOpacity(0.05);
-    final Color evenItemColor = colorScheme.primary.withOpacity(0.15);
-
     return Scaffold(
-      drawer: const CustomDrawer(),
-      appBar: AppBar(),
-      body: ReorderableListView(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
-      children: <Widget>[
-        for (int index = 0; index < _items.length; index += 1)
-          ListTile(
-            key: Key('$index'),
-            tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
-            title: Text('Item ${_items[index]}'),
+        drawer: const CustomDrawer(),
+        appBar: AppBar(),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Informe seu usuário:'),
+              const SizedBox(height: 10),
+              TextField(
+                autofocus: true,
+                controller: _nicknameCtrl,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) =>
+                            ChatScreen(nickName: _nicknameCtrl.text))),
+                child: const Text(
+                  'Entrar',
+                ),
+              )
+            ],
           ),
-      ],
-      onReorder: (int oldIndex, int newIndex) {
-        setState(() {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          final int item = _items.removeAt(oldIndex);
-          _items.insert(newIndex, item);
-        });
-      },
-    ),
-    );
+        ));
   }
 }
