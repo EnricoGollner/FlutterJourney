@@ -42,9 +42,8 @@ class _ChatScreenState extends State<ChatScreen> {
             child: StreamBuilder<QuerySnapshot>(
               stream: _db.collection('chats').snapshots(),
               builder: (context, snapshot) {
-
                 return !snapshot.hasData
-                    ? const CircularProgressIndicator()
+                    ? const Center(child: CircularProgressIndicator())
                     : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: ListView.separated(
