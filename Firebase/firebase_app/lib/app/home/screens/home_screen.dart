@@ -12,7 +12,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
           title: const Text('Home'),
         ),
         body: Center(
-          child: TextButton(onPressed: () => throw Exception(), child: Text('Throw Error')),
+          child: TextButton(
+            onPressed: () => throw Exception(),
+            child: const Text('Throw Error'),
+          ),
         )
     );
   }

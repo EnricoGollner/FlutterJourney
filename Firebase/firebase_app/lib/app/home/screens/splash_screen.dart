@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app/app/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +19,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   
   Future<void> _loadData()  async {
+    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+    await analytics.logEvent(name: 'SplashsScreenOpen');
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('userId');
 
@@ -35,7 +39,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('Splash Screen'),),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(height: 10),
+          Text('Splash Screen'),
+        ],
+      ),
     );
   }
 }

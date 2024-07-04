@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app/app/chat/screens/chat_screen.dart';
 import 'package:firebase_app/app/home/screens/home_screen.dart';
 import 'package:firebase_app/app/task/screens/task_screen.dart';
@@ -9,23 +10,32 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
     return Drawer(
       child: ListView(
         children: [
           ListTile(
             leading: const Icon(Icons.home),
             title: const Text('Home'),
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HomeScreen())),
+            onTap: () {
+              analytics.logEvent(name: 'HomePage');
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+            },
           ),
           ListTile(
             leading: const Icon(Icons.task),
             title: const Text('Tasks List'),
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TaskScreen())),
+            onTap: () {
+              analytics.logEvent(name: 'TasksPage');
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const TaskScreen()));
+            },
           ),
           ListTile(
             leading: const Icon(Icons.chat),
             title: const Text('Chat'),
             onTap: () {
+              analytics.logEvent(name: 'ChatPage');
               showDialog(
                 context: context,
                 builder: (context) {
@@ -74,7 +84,10 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.bug_report),
             title: const Text('Crashlytics'),
-            onTap: () => throw Exception(),
+            onTap: () {
+              analytics.logEvent(name: 'Exception');
+              throw Exception();
+            },
           ),
         ],
       ),
