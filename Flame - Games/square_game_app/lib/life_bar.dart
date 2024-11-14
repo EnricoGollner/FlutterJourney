@@ -3,42 +3,13 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-///This allows the user to place the bar as either [left], [center], or [right]
-///in relation to the top left corner of the bounding rectangle of the parent.
 enum LifeBarPlacement { left, center, right }
 
-///Class for represening a configurable Health Bar
-///
-///It can be added to any other component through composability:
-///To add this component simply call the add() method in the parent
-///component.
-///```dart
-///  LifeBar myLifeBar = LifeBar.initData(size); \\ parent size is required
-///  add(myLifeBar);
-///```
-///
-///The component is configurable through its named constructor.
-///Here is an example:
-///```dart
-///  LifeBar.initData(size                    \\ parent size
-///      , size: Vector2(size.x - 10, 3)      \\ size of the bar you want
-///      , placement: LifeBarPlacement.left); \\ relative placement of the bar
-///```
-///
-///Once the [LifeBar] has been edded to its parent you can notify it
-///about any changes to its life data by using either of these two methods:
-///```dart
-///  incrementCurrentLifeBy(int incrementValue)
-///  decrementCurrentLifeBy(int decrementValue)
-///```
 class LifeBar extends PositionComponent {
-  //default red color used for danger
   static const Color _redColor = Colors.red;
 
-  //default green color used for healthy state
   static const Color _greenColor = Colors.green;
 
-  //background color of the bar when the health element is missing
   static final Paint _backgroundFillColor = Paint()
     ..color = Colors.grey.withOpacity(0.35)
     ..style = PaintingStyle.fill;
