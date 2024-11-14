@@ -4,6 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:square_game_app/shape.dart';
+import 'package:square_game_app/utils.dart';
 
 void main() {
   runApp(GameWidget(game: MainGame()));
@@ -25,9 +26,7 @@ class MainGame extends FlameGame with DoubleTapDetector, TapCallbacks {
 
   @override
   void onTapUp(TapUpEvent event) {
-    // location of user's tap
     final Vector2 touchPoint = event.localPosition;
-    debugPrint("<user tap> touchpoint: $touchPoint");
 
     //Handle the tap action
     //
@@ -65,8 +64,16 @@ class MainGame extends FlameGame with DoubleTapDetector, TapCallbacks {
   }
 
   @override
+  void update(double dt) {
+    super.update(dt);
+    children.whereType<Shape>().forEach((component) {
+      if (Utils.isPositionOutOfBonds(size, component.position)) remove(component);
+    });
+  }
+
+  @override
   void render(Canvas canvas) {
-    textPaint.render(canvas, "objects active: ${children.length}", Vector2(10, 20));
+    textPaint.render(canvas, "objects active: ${children.whereType<Shape>().length}", Vector2(10, 24));
     super.render(canvas);
   }
 }

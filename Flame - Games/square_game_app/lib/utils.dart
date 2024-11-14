@@ -35,11 +35,7 @@ class Utils {
   }
 
   static bool isPositionOutOfBonds(Vector2 bounds, Vector2 position) {
-    bool result = false;
-
-    result = position.x >= bounds.x || position.x <= 0
-    || position.y >= bounds.y || position.y <= 0;
-
-    return result;
+    return position.x >= bounds.x || position.x <= 0
+      || position.y >= bounds.y || position.y <= 0;
   }
 }
